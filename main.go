@@ -1,85 +1,101 @@
 package main
 
 import (
-	"github.com/echo"
-	"github.com/echo/middleware"
-	"github.com/line/line-bot-sdk-go/linebot"
+	"github.com/joho/godotenv"
 	"log"
 	"os"
 	"strings"
+
+	"github.com/gin-gonic/gin"
+
+	"github.com/line/line-bot-sdk-go/linebot"
 )
 
 func main() {
-	port:=os.Getenv("PORT")
+	godotenv.Load()
+	port := os.Getenv("PORT")
 
 	if port == "" {
 		log.Fatal("$PORT must be set")
 	}
-	bot,err:=linebot.New(os.Getenv("CHANNELID"),os.Getenv("ACCESSTOKEN"))
-
+	bot, err := linebot.New(
+		os.Getenv("CHANNELID"),
+		os.Getenv("ACCESSTOKEN"),
+	)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	e:=echo.New()
-	e.Use(middleware.Logger())
+	router := gin.New()
+	router.Use(gin.Logger())
 
-	e.POST("", func(c echo.Context) error {
-		events,err:=bot.ParseRequest(c.Request())
+	// LINE Messaging API ルーティング
+	router.POST("/callback", func(c *gin.Context) {
+		events, err := bot.ParseRequest(c.Request)
 		if err != nil {
 			if err == linebot.ErrInvalidSignature {
 				log.Print(err)
 			}
-			return err
+			return
 		}
 
+		// "可愛い" 単語を含む場合、返信される
 		var replyText string
-		replyText="cute"
+		replyText = "可愛い"
 
-		var res string
-		res="ty"
+		// チャットの回答
+		var response string
+		response = "ありがとう！！"
 
+		// "おはよう" 単語を含む場合、返信される
 		var replySticker string
-		replySticker ="good moring"
+		replySticker = "おはよう"
 
-		responseSticker :=linebot.NewStickerMessage("11537", "52002757")
+		// スタンプで回答が来る
+		responseSticker := linebot.NewStickerMessage("11537", "52002757")
 
+		// "猫" 単語を含む場合、返信される
 		var replyImage string
-		replyImage="cat"
+		replyImage = "猫"
 
-		responseImage:=linebot.NewImageMessage("https://i.gyazo.com/2db8f85c496dd8f21a91eccc62ceee05.jpg", "https://i.gyazo.com/2db8f85c496dd8f21a91eccc62ceee05.jpg")
+		// 猫の画像が表示される
+		responseImage := linebot.NewImageMessage("https://i.gyazo.com/2db8f85c496dd8f21a91eccc62ceee05.jpg", "https://i.gyazo.com/2db8f85c496dd8f21a91eccc62ceee05.jpg")
 
+		// "ディズニー" 単語を含む場合、返信される
 		var replyLocation string
-		replyLocation ="Disney"
+		replyLocation = "ディズニー"
 
-		responseLocation:=linebot.NewLocationMessage("TokyoDisneyLand", "千葉県浦安市舞浜", 35.632896, 139.880394)
+		// ディズニーが地図表示される
+		responseLocation := linebot.NewLocationMessage("東京ディズニーランド", "千葉県浦安市舞浜", 35.632896, 139.880394)
 
 		for _, event := range events {
+			// イベントがメッセージの受信だった場合
 			if event.Type == linebot.EventTypeMessage {
 				switch message := event.Message.(type) {
+				// メッセージがテキスト形式の場合
 				case *linebot.TextMessage:
-					replyMessage:=message.Text
-
+					replyMessage := message.Text
+					// テキストで返信されるケース
 					if strings.Contains(replyMessage, replyText) {
-						bot.ReplyMessage(event.ReplyToken,linebot.NewTextMessage(res)).Do()
-					}else if strings.Contains(replyMessage, replySticker) {
-						bot.ReplyMessage(event.ReplyToken,responseSticker).Do()
-					}else if strings.Contains(replyMessage, replyLocation) {
-						bot.ReplyMessage(event.ReplyToken,responseLocation).Do()
-					}else if strings.Contains(replyMessage, replyImage) {
+						bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(response)).Do()
+						// スタンプで返信されるケース
+					} else if strings.Contains(replyMessage, replySticker) {
+						bot.ReplyMessage(event.ReplyToken, responseSticker).Do()
+						// 画像で返信されるケース
+					} else if strings.Contains(replyMessage, replyImage) {
 						bot.ReplyMessage(event.ReplyToken, responseImage).Do()
 						// 地図表示されるケース
+					} else if strings.Contains(replyMessage, replyLocation) {
+						bot.ReplyMessage(event.ReplyToken, responseLocation).Do()
 					}
-
-					_,err=bot.ReplyMessage(event.ReplyToken,linebot.NewTextMessage(replyMessage)).Do()
+					// 上記意外は、おうむ返しで返信
+					_, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(replyMessage)).Do()
 					if err != nil {
-						return err
+						log.Print(err)
 					}
 				}
 			}
 		}
-		return err
 	})
-
-	e.Start(":"+port)
+	router.Run(":" + port)
 }
