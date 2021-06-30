@@ -80,4 +80,6 @@ func main() {
 		}
 		return err
 	})
+
+	e.Start(":"+port)
 }
