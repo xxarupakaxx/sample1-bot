@@ -15,7 +15,7 @@ func main() {
 	if port == "" {
 		log.Fatal("$PORT must be set")
 	}
-	bot,err:=linebot.New("4328d1c958e11672e073e3195ef4eb3d","GoAYA2JDta1XkkHWwO2TaNy9u1l0eYB9mY8m8f2Xg0sGOqO4vJDQWYbEHCCsHBu/T6zHGpuID/fqvIykge0n9M36ER001L2rJrtZ9qj460KcaegFMCDWQnuvntu+YINz/nABTYqsYINfygkqrAsK/gdB04t89/1O/w1cDnyilFU=")
+	bot,err:=linebot.New(os.Getenv("CHANNELID"),os.Getenv("ACCESSTOKEN"))
 
 	if err != nil {
 		log.Fatal(err)
