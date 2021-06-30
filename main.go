@@ -66,6 +66,9 @@ func main() {
 						bot.ReplyMessage(event.ReplyToken,responseSticker).Do()
 					}else if strings.Contains(replyMessage, replyLocation) {
 						bot.ReplyMessage(event.ReplyToken,responseLocation).Do()
+					}else if strings.Contains(replyMessage, replyImage) {
+						bot.ReplyMessage(event.ReplyToken, responseImage).Do()
+						// 地図表示されるケース
 					}
 
 					_,err=bot.ReplyMessage(event.ReplyToken,linebot.NewTextMessage(replyMessage)).Do()
