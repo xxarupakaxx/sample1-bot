@@ -3,6 +3,7 @@ module github.com/xxarupakaxx/sample1-bot
 go 1.16
 
 require (
+	cloud.google.com/go v0.84.0 // indirect
 	github.com/gin-gonic/gin v1.7.2 // indirect
 	github.com/joho/godotenv v1.3.0 // indirect
 	github.com/labstack/echo v3.3.10+incompatible // indirect

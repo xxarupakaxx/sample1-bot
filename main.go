@@ -1,7 +1,6 @@
 package main
 
 import (
-	"github.com/joho/godotenv"
 	"log"
 	"os"
 	"strings"
@@ -18,10 +17,9 @@ func main() {
 	if port == "" {
 		log.Fatal("oioio")
 	}
-	godotenv.Load()
 	bot, err := linebot.New(
-		"4328d1c958e11672e073e3195ef4eb3d",
-		"GoAYA2JDta1XkkHWwO2TaNy9u1l0eYB9mY8m8f2Xg0sGOqO4vJDQWYbEHCCsHBu/T6zHGpuID/fqvIykge0n9M36ER001L2rJrtZ9qj460KcaegFMCDWQnuvntu+YINz/nABTYqsYINfygkqrAsK/gdB04t89/1O/w1cDnyilFU=",
+		os.Getenv("CHANNEL_SECRET"),
+		os.Getenv("CHANNEL_TOKEN"),
 	)
 	if err != nil {
 		log.Fatal(err)
