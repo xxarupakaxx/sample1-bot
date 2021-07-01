@@ -1,5 +1,5 @@
 module github.com/xxarupakaxx/sample1-bot
-
+// +heroku goVersion go1.16
 go 1.16
 
 require (
