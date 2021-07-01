@@ -29,8 +29,8 @@ func main() {
 	e:=echo.New()
 	e.Use(middleware.Logger())
 	e.POST("/callback", func(c echo.Context) error {
-		t:=time.Now()
-		message:=linebot.NewTextMessage(t.String())
+		t:=time.Now().Format("2006-1-02-3-4")
+		message:=linebot.NewTextMessage(t)
 		if _, err := bot.BroadcastMessage(message).Do(); err != nil {
 			log.Fatal(err)
 			return err
