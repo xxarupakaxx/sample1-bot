@@ -1,11 +1,11 @@
 package main
 
 import (
+	"github.com/labstack/echo"
+	"github.com/labstack/echo/middleware"
 	"log"
 	"os"
-	"strings"
-
-	"github.com/gin-gonic/gin"
+	"time"
 
 	"github.com/line/line-bot-sdk-go/linebot"
 )
@@ -24,8 +24,21 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	//youtebeAPI:=os.Getenv("YOUTUBE_APIKEY")
 
-	router := gin.New()
+	e:=echo.New()
+	e.Use(middleware.Logger())
+	e.POST("/callback", func(c echo.Context) error {
+		t:=time.Now()
+		message:=linebot.NewTextMessage(t.String())
+		if _, err := bot.BroadcastMessage(message).Do(); err != nil {
+			log.Fatal(err)
+			return err
+		}
+		return err
+	})
+	e.Start(":"+port)
+	/*router := gin.New()
 	router.Use(gin.Logger())
 
 	// LINE Messaging API ルーティング
@@ -96,5 +109,6 @@ func main() {
 			}
 		}
 	})
-	router.Run(":" + port)
+	router.Run(":" + port)*/
 }
+
