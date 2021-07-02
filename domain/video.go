@@ -2,7 +2,7 @@ package domain
 
 import "time"
 
-type video struct {
+type Video struct {
 	VideoID      string    `json:"videoId"`
 	PublishedAt  time.Time `json:"publishedAt"`
 	ChannelID    string    `json:"channelId"`
@@ -11,7 +11,7 @@ type video struct {
 	ChannelTitle string    `json:"channelTitle"`
 }
 
-type videoInfo struct {
+type VideoInfo struct {
 	Kind string `json:"kind"`
 	Etag string `json:"etag"`
 	ID   struct {

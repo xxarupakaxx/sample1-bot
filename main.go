@@ -4,8 +4,8 @@ import (
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 	"github.com/line/line-bot-sdk-go/linebot"
+	"github.com/xxarupakaxx/sample1-bot/model"
 	"log"
-	"net/http"
 	"os"
 	"strings"
 )
@@ -57,20 +57,24 @@ channel amazrashi Official YouTube Channel`
 							bot.ReplyMessage(event.ReplyToken,linebot.NewTextMessage(helpMessage)).Do()
 					}else if strings.Contains(replymessage, "channel") {
 						channelName:=replymessage[8:len(replymessage)]
-						url:="https://www.googleapis.com/youtube/v3/search"
-
-						req,err:=http.NewRequest("GET",url,nil)
+						videoes,err:=model.SerarchYoutubeChannel(channelName)
 						if err != nil {
 							log.Fatal(err)
 						}
-						params:=req.URL.Query()
-						params.Add("key",os.Getenv("YOUTUBE_APIKEY"))
-						params.Set("part","id,snippet")
-						params.Set("q",channelName)
-
-
+						for _,video:=range videoes{
+							baseurl:="https://www.youtube.com/watch?v="
+							if len(video.VideoID)!=0 {
+								url:=baseurl+video.VideoID
+								replymessage+="\n"
+								replymessage+=url
+							}
 						}
-
+						bot.ReplyMessage(event.ReplyToken,linebot.NewTextMessage(replymessage))
+						}
+					_, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(replymessage)).Do()
+					if err != nil {
+						log.Print(err)
+					}
 					}
 
 				}

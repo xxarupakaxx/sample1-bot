@@ -4,12 +4,14 @@ import (
 	"encoding/json"
 	"github.com/xxarupakaxx/sample1-bot/domain"
 	"io/ioutil"
+	"log"
 	"net/http"
+	"os"
 	"strings"
 	"time"
 )
 
-func serarchYoutubeList(apiKey string) ([]domain.video, error) {
+func SerarchYoutubeChannel(channelName string) ([]domain.Video, error) {
 	url:="https://www.googleapis.com/youtube/v3/search"
 
 	req,err:=http.NewRequest("GET",url,nil)
@@ -18,9 +20,9 @@ func serarchYoutubeList(apiKey string) ([]domain.video, error) {
 	}
 	req.Header.Set("content-type", "application/json")
 	params:=req.URL.Query()
-	params.Add("key",apiKey)
-	params.Add("q","amazarashi Official YouTube Channel")
-	params.Add("part","snippet, id")
+	params.Add("key",os.Getenv("YOUTUBE_APIKEY"))
+	params.Set("part","id,snippet")
+	params.Set("q",channelName)
 
 	req.URL.RawQuery=params.Encode()
 
@@ -41,13 +43,13 @@ func serarchYoutubeList(apiKey string) ([]domain.video, error) {
 	index:=strings.Index(string(body),"items")
 	s:=string(body)[index+7: len(string(body))-2]
 	//fmt.Println(s)
-	data:=make([]*videoInfo,0)
+	data:=make([]*domain.VideoInfo,0)
 	if err = json.Unmarshal([]byte(s), &data); err != nil {
 		log.Fatal(err)
 	}
-	videos:=make([]video,0,len(data))
+	videos:=make([]domain.Video,0,len(data))
 	for _,v:=range data{
-		videos=append(videos,video{
+		videos=append(videos,domain.Video{
 			VideoID:      v.ID.VideoID,
 			PublishedAt:  v.Snippet.PublishedAt,
 			ChannelID:    v.Snippet.ChannelID,
