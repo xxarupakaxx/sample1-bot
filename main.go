@@ -3,14 +3,26 @@ package main
 import (
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
-	"log"
-	"os"
-	"time"
-
 	"github.com/line/line-bot-sdk-go/linebot"
+	"log"
+	"net/http"
+	"os"
+	"strings"
 )
 
 func main() {
+
+	helpMessage:=`コマンド一覧
+help でコマンド一覧を表示できます
+channel 指定したチャンネルの最新の動画を表示します
+VideoGood 指定した動画のいいね数を表示します
+これから追加予定
+makePlayList 指定したチャンネルのプレイリストを作るor 指定した動画たちをプレイリストにする 
+upload 動画をアップロード
+delete 動画を削除
+mychannel 自分のアカウント情報
+例
+channel amazrashi Official YouTube Channel`
 
 	port := os.Getenv("PORT")
 
@@ -29,14 +41,42 @@ func main() {
 	e:=echo.New()
 	e.Use(middleware.Logger())
 	e.POST("/callback", func(c echo.Context) error {
-		t:=time.Now().Format("2006-1-02-3-4")
-		message:=linebot.NewTextMessage(t)
-		if _, err := bot.BroadcastMessage(message).Do(); err != nil {
+
+		events,err:=bot.ParseRequest(c.Request())
+		if err != nil {
 			log.Fatal(err)
-			return err
 		}
-		return err
-	})
+
+
+		for _,event:=range events{
+			if event.Type == linebot.EventTypeMessage {
+				switch message:=event.Message.(type){
+				case *linebot.TextMessage:
+					replymessage:=message.Text
+					if replymessage=="help"{
+							bot.ReplyMessage(event.ReplyToken,linebot.NewTextMessage(helpMessage)).Do()
+					}else if strings.Contains(replymessage, "channel") {
+						channelName:=replymessage[8:len(replymessage)]
+						url:="https://www.googleapis.com/youtube/v3/search"
+
+						req,err:=http.NewRequest("GET",url,nil)
+						if err != nil {
+							log.Fatal(err)
+						}
+						params:=req.URL.Query()
+						params.Add("key",os.Getenv("YOUTUBE_APIKEY"))
+						params.Set("part","id,snippet")
+						params.Set("q",channelName)
+
+
+						}
+
+					}
+
+				}
+			}
+			return err
+		})
 	e.Start(":"+port)
 	/*router := gin.New()
 	router.Use(gin.Logger())
