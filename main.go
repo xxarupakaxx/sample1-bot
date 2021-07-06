@@ -10,9 +10,7 @@ import (
 	"strings"
 )
 
-func main() {
-
-	helpMessage:=`コマンド一覧
+const HELPMESSAGE = `コマンド一覧
 help でコマンド一覧を表示できます
 channel 指定したチャンネルの最新の動画を表示します
 VideoGood 指定した動画のいいね数を表示します
@@ -23,6 +21,7 @@ delete 動画を削除
 mychannel 自分のアカウント情報
 例
 channel amazrashi Official YouTube Channel`
+func main() {
 
 	port := os.Getenv("PORT")
 
@@ -49,12 +48,15 @@ channel amazrashi Official YouTube Channel`
 
 
 		for _,event:=range events{
+
 			if event.Type == linebot.EventTypeMessage {
 				switch message:=event.Message.(type){
 				case *linebot.TextMessage:
+					user:=bot.GetProfile(event.Source.UserID)
 					replymessage:=message.Text
 					if replymessage=="help"{
-							bot.ReplyMessage(event.ReplyToken,linebot.NewTextMessage(helpMessage)).Do()
+							userProfile,_:=user.Do()
+							bot.ReplyMessage(event.ReplyToken,linebot.NewTextMessage(userProfile.DisplayName+"さん\n"+HELPMESSAGE)).Do()
 					}else if strings.Contains(replymessage, "channel") {
 						channelName:=replymessage[8:len(replymessage)]
 						videoes,err:=model.SerarchYoutubeChannel(channelName)

@@ -59,3 +59,9 @@ func SerarchYoutubeChannel(channelName string) ([]domain.Video, error) {
 	}
 	return videos,err
 }
+
+/*func UserListGET(user string) error {
+	//todo:チャット相手のuser情報を入手してDatebase接続してデータを保存する。
+}*/
+
+
