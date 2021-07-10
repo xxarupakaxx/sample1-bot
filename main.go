@@ -54,6 +54,8 @@ func main() {
 
 			if event.Type == linebot.EventTypeMessage {
 				switch message:=event.Message.(type){
+				case *linebot.LocationMessage:
+					sendRestoInfo(bot,event)
 				case *linebot.TextMessage:
 					user:=bot.GetProfile(event.Source.UserID)
 					replymessage:=message.Text
