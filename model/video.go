@@ -2,6 +2,7 @@ package model
 
 import (
 	"encoding/json"
+	"github.com/line/line-bot-sdk-go/linebot"
 	"github.com/xxarupakaxx/sample1-bot/domain"
 	"io/ioutil"
 	"log"
@@ -60,8 +61,49 @@ func SerarchYoutubeChannel(channelName string) ([]domain.Video, error) {
 	return videos,err
 }
 
-/*func UserListGET(user string) error {
-	//todo:チャット相手のuser情報を入手してDatebase接続してデータを保存する。
+func UserListGET(bot *linebot.Client,event *linebot.Event) []domain.Video {
+
+	user:=bot.GetProfile(event.Source.UserID)
+	userProfile,err:= user.Do()
+	if err != nil {
+		log.Fatal(err)
+	}
+	db:=DBConnect()
+	result,err:=db.Query("SELECT * FROM video ORDER BY user DESC ")
+	if err != nil {
+		log.Fatal(err)
+	}
+	videos:=[]domain.Video{}
+	for result.Next() {
+		var (
+			videoId string
+			published_at time.Time
+			channelID string
+			title string
+			description string
+			channelTitle string
+		)
+
+		result.Scan(&userProfile.UserID,&videoId,&published_at,&channelID,&title,&description,&channelTitle)
+		videos=append(videos,domain.Video{
+			VideoID:      videoId,
+			PublishedAt:  published_at,
+			ChannelID:    channelID,
+			Title:        title,
+			Description:  description,
+			ChannelTitle: channelTitle,
+		})
+	}
+	return videos
+}
+/*
+func UserVideoPOST(bot *linebot.Client, event *linebot.Event) domain.Video {
+	user:=bot.GetProfile(event.Source.UserID)
+	userProfile,err:= user.Do()
+	if err != nil {
+		log.Fatal(err)
+	}
+	db:=DBConnect()
+
+	result,err:=db.Query("INSERT INTO video (user,videoId,published_at,channelID,title,description,channelTitle) VALUES (?,?,?,?,?,?,?)",title,now,now)
 }*/
-
-

@@ -1,12 +1,15 @@
 package main
 
 import (
+	"fmt"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 	"github.com/line/line-bot-sdk-go/linebot"
 	"github.com/xxarupakaxx/sample1-bot/model"
 	"log"
+	"net/http"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -156,5 +159,62 @@ func main() {
 		}
 	})
 	router.Run(":" + port)*/
+}
+
+func lineHandler(c echo.Context) error {
+	port := os.Getenv("PORT")
+
+	if port == "" {
+		log.Fatal("oioio")
+	}
+	bot, err := linebot.New(
+		os.Getenv("CHANNEL_SECRET"),
+		os.Getenv("CHANNEL_TOKEN"),
+	)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	events,err:=bot.ParseRequest(c.Request())
+	if err != nil {
+		if err == linebot.ErrInvalidSignature {
+			c.Response().WriteHeader(http.StatusBadRequest)
+		}else {
+			c.Response().WriteHeader(http.StatusInternalServerError)
+		}
+		return err
+	}
+
+	for _,event:=range events{
+		if event.Type == linebot.EventTypeMessage {
+			switch message:=event.Message.(type){
+			case *linebot.TextMessage:
+				replyMessage:=message.Text
+				_,err=bot.ReplyMessage(event.ReplyToken,linebot.NewTextMessage(replyMessage)).Do()
+				if err != nil {
+					log.Fatal(err)
+				}
+			case *linebot.LocationMessage:
+				sendRestoInfo(bot,event)
+			}
+
+		}
+	}
+
+	return c.String(http.StatusOK,"GOOD")
+}
+
+func sendRestoInfo(bot *linebot.Client, e *linebot.Event) {
+	msg:=e.Message.(*linebot.LocationMessage)
+
+	lat :=strconv.FormatFloat(msg.Latitude,'f',2,64)
+	lng:=strconv.FormatFloat(msg.Longitude,'f',2,64)
+
+	replyMsg:=fmt.Sprintf("緯度:%s\n経度:%s",lat,lng)
+
+	_,err:=bot.ReplyMessage(e.ReplyToken,linebot.NewTextMessage(replyMsg)).Do()
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
