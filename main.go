@@ -218,8 +218,7 @@ func sendRestoInfo(bot *linebot.Client, e *linebot.Event) {
 	replyMsg:=getRestoInfo(lat,lng)
 
 	res:=linebot.NewTemplateMessage("レストラン一覧",linebot.NewCarouselTemplate(replyMsg...).WithImageOptions("rectangle","cover"))
-	_,err:=bot.ReplyMessage(e.ReplyToken,linebot.NewTextMessage(replyMsg)).Do()
-	if err != nil {
+	if _, err := bot.ReplyMessage(e.ReplyToken, res).Do(); err != nil {
 		log.Fatal(err)
 	}
 }
