@@ -6,17 +6,19 @@ import (
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 	"github.com/line/line-bot-sdk-go/linebot"
+	"github.com/xxarupakaxx/sample1-bot/domain"
 	"github.com/xxarupakaxx/sample1-bot/model"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
 	"strconv"
-	"strings"
 	"unicode/utf8"
 )
 
-const HELPMESSAGE = `コマンド一覧
+const (
+	userStatusAvailable, userStatusNotAvailable string= "available", "not_available"
+	HELPMESSAGE                              = `コマンド一覧
 help でコマンド一覧を表示できます
 channel 指定したチャンネルの最新の動画を表示します
 VideoGood 指定した動画のいいね数を表示します
@@ -27,6 +29,8 @@ delete 動画を削除
 mychannel 自分のアカウント情報
 例
 channel amazrashi Official YouTube Channel`
+)
+
 func main() {
 	port := os.Getenv("PORT")
 	if port == "" {
@@ -65,10 +69,156 @@ func lineHandler(c echo.Context) error {
 	for _,event:=range events{
 
 		if event.Type == linebot.EventTypeMessage {
-			switch message:=event.Message.(type){
+			switch event.Type {
+			case linebot.EventTypeFollow:
+				db:=model.DBConnect()
+				defer db.Close()
+				
+				userData:=domain.User{
+					Id:         event.Source.UserID,
+					IdType:     string(event.Source.Type),
+					Timestamp:  event.Timestamp,
+					ReplyToken: event.ReplyToken,
+					Status:     userStatusAvailable,
+				}
+				_,err:=db.Exec("INSERT INTO user (id, id_type, reply_token, status) VALUES (?,?,?,?,?) ON DUPLICATE KEY UPDATE user.id = values(user.id)",userData.Id,userData.IdType,userData.Timestamp,userData.ReplyToken,userData.Status)
+				if err != nil {
+					log.Fatal(err)
+				}
+			case linebot.EventTypeMessage:
+				log.Println(event)
+				switch message := event.Message.(type) {
+				case *linebot.TextMessage:
+					switch message.Text {
+					case "text":
+						resp:=linebot.NewTextMessage(message.Text)
+
+						if _,err:=bot.ReplyMessage(event.ReplyToken,resp).Do();err!=nil{
+							log.Fatal(err)
+						}
+					case "location":
+						resp:=linebot.NewLocationMessage("現在地","宮城県多賀城市",38.297807, 141.031)
+						if _,err:=bot.ReplyMessage(event.ReplyToken,resp).Do();err!=nil{
+							log.Fatal(err)
+						}
+					case "sticker":
+						resp:=linebot.NewStickerMessage("3","230")
+						if _, err := bot.ReplyMessage(event.ReplyToken, resp).Do(); err != nil {
+							log.Fatal(err)
+						}
+					case "image":
+						resp:=linebot.NewImageMessage("https://farm5.staticflickr.com/4849/45718165635_328355a940_m.jpg", "https://farm5.staticflickr.com/4849/45718165635_328355a940_m.jpg")
+						if _, err := bot.ReplyMessage(event.ReplyToken, resp).Do(); err != nil {
+							log.Fatal(err)
+						}
+					case "buttontemplate":
+						resp := linebot.NewTemplateMessage(
+							"this is a buttons template",
+							linebot.NewButtonsTemplate(
+								"https://farm5.staticflickr.com/4849/45718165635_328355a940_m.jpg",
+								"Menu",
+								"Please select",
+								linebot.NewPostbackAction("Buy", "action=buy&itemid=123", "", "displayText"),
+								linebot.NewPostbackAction("Buy", "action=buy&itemid=123", "text", ""),
+								linebot.NewURIAction("View detail", "http://example.com/page/123"),
+							),
+						)
+						if _, err := bot.ReplyMessage(event.ReplyToken, resp).Do(); err != nil {
+							log.Fatal(err)
+						}
+					case "datetimepicker":
+						resp := linebot.NewTemplateMessage(
+							"this is a buttons template",
+							linebot.NewButtonsTemplate(
+								"https://farm5.staticflickr.com/4849/45718165635_328355a940_m.jpg",
+								"Menu",
+								"Please select a date,  time or datetime",
+								linebot.NewDatetimePickerAction("Date", "action=sel&only=date", "date", "2017-09-01", "2017-09-03", ""),
+								linebot.NewDatetimePickerAction("Time", "action=sel&only=time", "time", "", "23:59", "00:00"),
+								linebot.NewDatetimePickerAction("DateTime", "action=sel", "datetime", "2017-09-01T12:00", "", ""),
+							),
+						)
+						if _, err := bot.ReplyMessage(event.ReplyToken, resp).Do(); err != nil {
+							log.Fatal(err)
+						}
+					case"confirm":
+						resp := linebot.NewTemplateMessage(
+							"this is a confirm template",
+							linebot.NewConfirmTemplate(
+								"Are you sure?",
+								linebot.NewMessageAction("Yes", "yes"),
+								linebot.NewMessageAction("No", "no"),
+							),
+						)
+						if _, err := bot.ReplyMessage(event.ReplyToken, resp).Do(); err != nil {
+							log.Fatal(err)
+						}
+					case "carousel":
+						resp := linebot.NewTemplateMessage(
+							"this is a carousel template with imageAspectRatio,  imageSize and imageBackgroundColor",
+							linebot.NewCarouselTemplate(
+								linebot.NewCarouselColumn(
+									"https://farm5.staticflickr.com/4849/45718165635_328355a940_m.jpg",
+									"this is menu",
+									"description",
+									linebot.NewPostbackAction("Buy", "action=buy&itemid=111", "", ""),
+									linebot.NewPostbackAction("Add to cart", "action=add&itemid=111", "", ""),
+									linebot.NewURIAction("View detail", "http://example.com/page/111"),
+								).WithImageOptions("#FFFFFF"),
+								linebot.NewCarouselColumn(
+									"https://farm5.staticflickr.com/4849/45718165635_328355a940_m.jpg",
+									"this is menu",
+									"description",
+									linebot.NewPostbackAction("Buy", "action=buy&itemid=111", "", ""),
+									linebot.NewPostbackAction("Add to cart", "action=add&itemid=111", "", ""),
+									linebot.NewURIAction("View detail", "http://example.com/page/111"),
+								).WithImageOptions("#FFFFFF"),
+							).WithImageOptions("rectangle", "cover"),
+						)
+						if _, err := bot.ReplyMessage(event.ReplyToken, resp).Do(); err != nil {
+							log.Fatal(err)
+						}
+					case "flex":
+						resp:=linebot.NewFlexMessage(
+							"this is a flex message",
+							&linebot.BubbleContainer{
+								Type:      linebot.FlexContainerTypeBubble,
+								Body:      &linebot.BoxComponent{
+									Type:            linebot.FlexComponentTypeBox,
+									Layout:          linebot.FlexBoxLayoutTypeVertical,
+									Contents:        []linebot.FlexComponent{
+										&linebot.TextComponent{
+											Type:       linebot.FlexComponentTypeText,
+											Text:       "Hello",
+										},
+										&linebot.TextComponent{Type: linebot.FlexComponentTypeText,Text: "World"},
+									},
+								},
+							})
+						if _, err := bot.ReplyMessage(event.ReplyToken, resp).Do(); err != nil {
+							log.Fatal(err)
+						}
+					case "quick":
+						resp:=linebot.NewTextMessage(
+							"select your favorite food category or send me your location",
+							).WithQuickReplies(
+							linebot.NewQuickReplyItems(
+								linebot.NewQuickReplyButton("https://trap.jp/content/images/2020/01/traP_logo_icon-1.png", linebot.NewMessageAction("traP", "traP")),
+								linebot.NewQuickReplyButton("https://trap.jp/content/images/2021/04/trap_logo_full.jpg", linebot.NewMessageAction("Tempura", "Tempura")),
+								linebot.NewQuickReplyButton("", linebot.NewLocationAction("Send location")),
+							))
+						if _, err := bot.ReplyMessage(event.ReplyToken, resp).Do(); err != nil {
+							log.Fatal(err)
+						}
+					}
+				}
+			}
+			/*switch message:=event.Message.(type){
 			case *linebot.LocationMessage:
 				sendRestoInfo(bot,event)
 			case *linebot.TextMessage:
+				replymessage:=message.Text
+				
 				user:=bot.GetProfile(event.Source.UserID)
 				replymessage:=message.Text
 				if replymessage=="help"{
@@ -93,7 +243,7 @@ func lineHandler(c echo.Context) error {
 				if _,err :=bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(replymessage)).Do();err!=nil {
 					log.Print(err)
 				}
-			}
+			}*/
 
 		}
 	}
@@ -119,38 +269,6 @@ func sendRestoInfo(bot *linebot.Client, e *linebot.Event) {
 	}
 }
 
-// response APIレスポンス
-type response struct {
-	Results results `json:"results"`
-}
-
-// results APIレスポンスの内容
-type results struct {
-	Shop []shop `json:"shop"`
-}
-
-// shop レストラン一覧
-type shop struct {
-	Name    string `json:"name"`
-	Address string `json:"address"`
-	Photo   photo  `json:"photo"`
-	URLS    urls   `json:"urls"`
-}
-
-// photo 写真URL一覧
-type photo struct {
-	Mobile mobile `json:"mobile"`
-}
-
-// mobile モバイル用の写真URL
-type mobile struct {
-	L string `json:"l"`
-}
-
-// urls URL一覧
-type urls struct {
-	PC string `json:"pc"`
-}
 
 func getRestoInfo(lat string, lng string) []*linebot.CarouselColumn {
 	apikey := os.Getenv("HOTPEPPERKEY")
@@ -169,7 +287,7 @@ func getRestoInfo(lat string, lng string) []*linebot.CarouselColumn {
 		log.Fatal(err)
 	}
 
-	var data response
+	var data domain.Response
 	if err := json.Unmarshal(body, &data); err != nil {
 		log.Fatal(err)
 	}

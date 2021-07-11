@@ -716,35 +716,59 @@
       <ObjectGrants>ALL PRIVILEGES|heroku_5bb15da5377d4aa
 </ObjectGrants>
     </user>
-    <table id="224" parent="2" name="video"/>
-    <column id="225" parent="224" name="user">
+    <table id="224" parent="2" name="user"/>
+    <table id="225" parent="2" name="video"/>
+    <column id="226" parent="224" name="id">
       <Position>1</Position>
       <DataType>varchar(255)|0s</DataType>
     </column>
-    <column id="226" parent="224" name="videoId">
+    <column id="227" parent="224" name="id_type">
       <Position>2</Position>
       <DataType>varchar(255)|0s</DataType>
     </column>
-    <column id="227" parent="224" name="published_at">
+    <column id="228" parent="224" name="timestamp">
       <Position>3</Position>
       <DataType>timestamp|0s</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
       <OnUpdate>CURRENT_TIMESTAMP</OnUpdate>
     </column>
-    <column id="228" parent="224" name="channelID">
+    <column id="229" parent="224" name="reply_token">
       <Position>4</Position>
       <DataType>varchar(255)|0s</DataType>
     </column>
-    <column id="229" parent="224" name="title">
+    <column id="230" parent="224" name="status">
       <Position>5</Position>
       <DataType>varchar(255)|0s</DataType>
     </column>
-    <column id="230" parent="224" name="description">
+    <column id="231" parent="225" name="user">
+      <Position>1</Position>
+      <DataType>varchar(255)|0s</DataType>
+    </column>
+    <column id="232" parent="225" name="videoId">
+      <Position>2</Position>
+      <DataType>varchar(255)|0s</DataType>
+    </column>
+    <column id="233" parent="225" name="published_at">
+      <Position>3</Position>
+      <DataType>timestamp|0s</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
+      <OnUpdate>CURRENT_TIMESTAMP</OnUpdate>
+    </column>
+    <column id="234" parent="225" name="channelID">
+      <Position>4</Position>
+      <DataType>varchar(255)|0s</DataType>
+    </column>
+    <column id="235" parent="225" name="title">
+      <Position>5</Position>
+      <DataType>varchar(255)|0s</DataType>
+    </column>
+    <column id="236" parent="225" name="description">
       <Position>6</Position>
       <DataType>varchar(255)|0s</DataType>
     </column>
-    <column id="231" parent="224" name="channelTitle">
+    <column id="237" parent="225" name="channelTitle">
       <Position>7</Position>
       <DataType>varchar(255)|0s</DataType>
     </column>
