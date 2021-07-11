@@ -153,7 +153,7 @@ type urls struct {
 }
 
 func getRestoInfo(lat string, lng string) []*linebot.CarouselColumn {
-	apikey := "(自分のAPIKEYを入力)"
+	apikey := os.Getenv("HOTPEPPERKEY")
 	url := fmt.Sprintf(
 		"https://webservice.recruit.co.jp/hotpepper/gourmet/v1/?format=json&key=%s&lat=%s&lng=%s",
 		apikey, lat, lng)
