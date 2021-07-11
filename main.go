@@ -28,88 +28,24 @@ mychannel 自分のアカウント情報
 例
 channel amazrashi Official YouTube Channel`
 func main() {
-
 	port := os.Getenv("PORT")
-
 	if port == "" {
 		log.Fatal("oioio")
 	}
-	bot, err := linebot.New(
-		os.Getenv("CHANNEL_SECRET"),
-		os.Getenv("CHANNEL_TOKEN"),
-	)
-	if err != nil {
-		log.Fatal(err)
-	}
-	//youtebeAPI:=os.Getenv("YOUTUBE_APIKEY")
 
 	e:=echo.New()
 	e.Use(middleware.Logger())
-	e.POST("/callback", func(c echo.Context) error {
-
-		events,err:=bot.ParseRequest(c.Request())
-		if err != nil {
-			log.Fatal(err)
-		}
-
-
-		for _,event:=range events{
-
-			if event.Type == linebot.EventTypeMessage {
-				switch message:=event.Message.(type){
-				case *linebot.LocationMessage:
-					sendRestoInfo(bot,event)
-				case *linebot.TextMessage:
-					user:=bot.GetProfile(event.Source.UserID)
-					replymessage:=message.Text
-					if replymessage=="help"{
-							userProfile,_:=user.Do()
-							bot.ReplyMessage(event.ReplyToken,linebot.NewTextMessage(userProfile.DisplayName+"さん\n"+HELPMESSAGE)).Do()
-					}else if strings.Contains(replymessage, "channel") {
-						channelName:=replymessage[8:len(replymessage)]
-						videoes,err:=model.SerarchYoutubeChannel(channelName)
-						if err != nil {
-							log.Fatal(err)
-						}
-						for _,video:=range videoes{
-							baseurl:="https://www.youtube.com/watch?v="
-							if len(video.VideoID)!=0 {
-								url:=baseurl+video.VideoID
-								replymessage+="\n"
-								replymessage+=url
-							}
-						}
-						bot.ReplyMessage(event.ReplyToken,linebot.NewTextMessage(replymessage))
-						}
-					_, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(replymessage)).Do()
-					if err != nil {
-						log.Print(err)
-					}
-					}
-
-				}
-			}
-			return err
-		})
+	e.POST("/callback", lineHandler)
 	e.Start(":"+port)
 
 }
 
 func lineHandler(c echo.Context) error {
-	port := os.Getenv("PORT")
 
-	if port == "" {
-		log.Fatal("oioio")
-	}
 	bot, err := linebot.New(
 		os.Getenv("CHANNEL_SECRET"),
 		os.Getenv("CHANNEL_TOKEN"),
 	)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	events,err:=bot.ParseRequest(c.Request())
 	if err != nil {
 		if err == linebot.ErrInvalidSignature {
 			c.Response().WriteHeader(http.StatusBadRequest)
@@ -119,40 +55,67 @@ func lineHandler(c echo.Context) error {
 		return err
 	}
 
+	//youtebeAPI:=os.Getenv("YOUTUBE_APIKEY")
+	events,err:=bot.ParseRequest(c.Request())
+	if err != nil {
+		log.Fatal(err)
+	}
+
+
 	for _,event:=range events{
+
 		if event.Type == linebot.EventTypeMessage {
 			switch message:=event.Message.(type){
-			case *linebot.TextMessage:
-				replyMessage:=message.Text
-				_,err=bot.ReplyMessage(event.ReplyToken,linebot.NewTextMessage(replyMessage)).Do()
-				if err != nil {
-					log.Fatal(err)
-				}
 			case *linebot.LocationMessage:
 				sendRestoInfo(bot,event)
+			case *linebot.TextMessage:
+				user:=bot.GetProfile(event.Source.UserID)
+				replymessage:=message.Text
+				if replymessage=="help"{
+					userProfile,_:=user.Do()
+					bot.ReplyMessage(event.ReplyToken,linebot.NewTextMessage(userProfile.DisplayName+"さん\n"+HELPMESSAGE)).Do()
+				}else if strings.Contains(replymessage, "channel") {
+					channelName:=replymessage[8:len(replymessage)]
+					videoes,err:=model.SerarchYoutubeChannel(channelName)
+					if err != nil {
+						log.Fatal(err)
+					}
+					for _,video:=range videoes{
+						baseurl:="https://www.youtube.com/watch?v="
+						if len(video.VideoID)!=0 {
+							url:=baseurl+video.VideoID
+							replymessage+="\n"
+							replymessage+=url
+						}
+					}
+					bot.ReplyMessage(event.ReplyToken,linebot.NewTextMessage(replymessage))
+				}
+				if _,err :=bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(replymessage)).Do();err!=nil {
+					log.Print(err)
+				}
 			}
 
 		}
 	}
+	return c.String(http.StatusOK,"OK")
 
-	return c.String(http.StatusOK,"GOOD")
 }
 
 func sendRestoInfo(bot *linebot.Client, e *linebot.Event) {
-	msg:=e.Message.(*linebot.LocationMessage)
+	msg := e.Message.(*linebot.LocationMessage)
 
-	lat :=strconv.FormatFloat(msg.Latitude,'f',2,64)
-	lng:=strconv.FormatFloat(msg.Longitude,'f',2,64)
+	lat := strconv.FormatFloat(msg.Latitude, 'f', 2, 64)
+	lng := strconv.FormatFloat(msg.Longitude, 'f', 2, 64)
 
-	replyMsg:=getRestoInfo(lat,lng)
+	replyMsg := getRestoInfo(lat, lng)
 
 	res := linebot.NewTemplateMessage(
-			"レストラン一覧",
-			linebot.NewCarouselTemplate(replyMsg...).WithImageOptions("rectangle", "cover"),
-		)
-	bot.ReplyMessage(e.ReplyToken, linebot.NewTextMessage("aaa")).Do()
-	if _, err := bot.ReplyMessage(e.ReplyToken,res).Do(); err != nil {
-		log.Fatal(err)
+		"レストラン一覧",
+		linebot.NewCarouselTemplate(replyMsg...).WithImageOptions("rectangle", "cover"),
+	)
+
+	if _, err := bot.ReplyMessage(e.ReplyToken, res).Do(); err != nil {
+		log.Print(err)
 	}
 }
 
@@ -190,34 +153,41 @@ type urls struct {
 }
 
 func getRestoInfo(lat string, lng string) []*linebot.CarouselColumn {
-	apikey:=os.Getenv("HOTPEPPERKEY")
-	url:=fmt.Sprintf("https://webservice.recruit.co.jp/hotpepper/gourmet/v1/?format=json&key=%s&lat=%s&lng=%s",apikey,lat,lng)
-	resp,err:=http.Get(url)
+	apikey := "(自分のAPIKEYを入力)"
+	url := fmt.Sprintf(
+		"https://webservice.recruit.co.jp/hotpepper/gourmet/v1/?format=json&key=%s&lat=%s&lng=%s",
+		apikey, lat, lng)
+
+	// リクエストしてボディを取得
+	resp, err := http.Get(url)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer resp.Body.Close()
-
-	body,err:=ioutil.ReadAll(resp.Body)
+	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	var data response
-	if err := json.Unmarshal(body, &data);err!=nil {
+	if err := json.Unmarshal(body, &data); err != nil {
 		log.Fatal(err)
 	}
 
 	var ccs []*linebot.CarouselColumn
 	for _, shop := range data.Results.Shop {
-		addr:=shop.Address
+		addr := shop.Address
 		if 60 < utf8.RuneCountInString(addr) {
-			addr=string([]rune(addr)[:60])
+			addr = string([]rune(addr)[:60])
 		}
 
-		cc:=linebot.NewCarouselColumn(shop.Photo.Mobile.L,shop.Name,addr,linebot.NewURIAction("ホットペッパーを開く",shop.URLS.PC)).WithImageOptions("#FFFFFF")
-		ccs=append(ccs,cc)
+		cc := linebot.NewCarouselColumn(
+			shop.Photo.Mobile.L,
+			shop.Name,
+			addr,
+			linebot.NewURIAction("ホットペッパーで開く", shop.URLS.PC),
+		).WithImageOptions("#FFFFFF")
+		ccs = append(ccs, cc)
 	}
-
 	return ccs
 }
