@@ -217,11 +217,12 @@ func sendRestoInfo(bot *linebot.Client, e *linebot.Event) {
 
 	replyMsg:=getRestoInfo(lat,lng)
 
-	//res := linebot.NewTemplateMessage(
-	//		"レストラン一覧",
-	//		linebot.NewCarouselTemplate(replyMsg...).WithImageOptions("rectangle", "cover"),
-	//	)
-	if _, err := bot.ReplyMessage(e.ReplyToken,linebot.NewTextMessage(replyMsg)).Do(); err != nil {
+	res := linebot.NewTemplateMessage(
+			"レストラン一覧",
+			linebot.NewCarouselTemplate(replyMsg...).WithImageOptions("rectangle", "cover"),
+		)
+	bot.ReplyMessage(e.ReplyToken, linebot.NewTextMessage("aaa")).Do()
+	if _, err := bot.ReplyMessage(e.ReplyToken,res).Do(); err != nil {
 		log.Fatal(err)
 	}
 }
@@ -250,7 +251,7 @@ type urls struct {
 	PC string `json:"pc"`
 }
 
-func getRestoInfo(lat string, lng string) string/*[]*linebot.CarouselColumn*/ {
+func getRestoInfo(lat string, lng string) []*linebot.CarouselColumn {
 	apikey:=os.Getenv("HOTPEPPERKEY")
 	url:=fmt.Sprintf("https://webservice.recruit.co.jp/hotpepper/gourmet/v1/?format=json&key=%s&lat=%s&lng=%s",apikey,lat,lng)
 	resp,err:=http.Get(url)
@@ -279,9 +280,6 @@ func getRestoInfo(lat string, lng string) string/*[]*linebot.CarouselColumn*/ {
 		cc:=linebot.NewCarouselColumn(shop.Photo.Mobile.L,shop.Name,addr,linebot.NewURIAction("ホットペッパーを開く",shop.urls.PC)).WithImageOptions("#FFFFFF")
 		ccs=append(ccs,cc)
 	}
-	info := ""
-	for _, shop := range data.Results.Shop {
-		info += shop.Name + "\n" + shop.Address + "\n\n"
-	}
-	return info
+
+	return ccs
 }
