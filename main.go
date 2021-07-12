@@ -86,7 +86,22 @@ func lineHandler(c echo.Context) error {
 					log.Fatal(err)
 				}
 			case linebot.EventTypeMessage:
-				log.Println(event)
+				db:=model.DBConnect()
+				defer db.Close()
+				userData:=domain.User{
+					Id:         event.Source.UserID,
+					IdType:     string(event.Source.Type),
+					Timestamp:  event.Timestamp,
+					ReplyToken: event.ReplyToken,
+					Status:     userStatusAvailable,
+				}
+				if r,_:=db.Query("SELECT * FROM user where id=?",userData.Id);r==nil {
+					_,err:=db.Exec("INSERT INTO user VALUES (?,?,?,?,?)",userData.Id,userData.IdType,userData.Timestamp,userData.ReplyToken,userData.Status)
+					if err != nil {
+						log.Fatal(err)
+					}
+				}
+
 				switch message := event.Message.(type) {
 				case *linebot.TextMessage:
 					switch message.Text {
