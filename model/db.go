@@ -21,8 +21,8 @@ func DBConnect()(db *sql.DB) {
 		if err != nil {
 			log.Fatal(err)
 		}
-		if err= db.Ping();err!=nil{
-			log.Fatal(err)
+		if err= db.Ping();err==nil{
+			log.Println("aaaaaaaaaaaaaaaaaaaaaaaa")
 		}
 	}else {
 		//local
@@ -37,8 +37,8 @@ func DBConnect()(db *sql.DB) {
 		if err != nil {
 			log.Fatal(err)
 		}
-		if err= db.Ping();err!=nil{
-			log.Fatal(err)
+		if err= db.Ping();err==nil{
+			log.Println("aaaaaaaaaaaaaaaaaaaaaaaa")
 		}
 	}
 	return db
