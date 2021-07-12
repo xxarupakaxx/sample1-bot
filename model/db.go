@@ -23,6 +23,8 @@ func DBConnect()(db *sql.DB) {
 		}
 		if err= db.Ping();err==nil{
 			log.Println("aaaaaaaaaaaaaaaaaaaaaaaa")
+		}else {
+			log.Println("failllllllllllllll")
 		}
 	}else {
 		//local
