@@ -81,7 +81,7 @@ func lineHandler(c echo.Context) error {
 					ReplyToken: event.ReplyToken,
 					Status:     userStatusAvailable,
 				}
-				_,err:=db.Exec("INSERT INTO user (id, id_type, reply_token, status) VALUES (?,?,?,?,?) ON DUPLICATE KEY UPDATE user.id = values(user.id)",userData.Id,userData.IdType,userData.Timestamp,userData.ReplyToken,userData.Status)
+				_,err:=db.Exec("INSERT INTO user (id, id_type, reply_token, status) VALUES (?,?,?,?,?)",userData.Id,userData.IdType,userData.Timestamp,userData.ReplyToken,userData.Status)
 				if err != nil {
 					log.Fatal(err)
 				}
