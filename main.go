@@ -67,24 +67,28 @@ func lineHandler(c echo.Context) error {
 
 
 	for _,event:=range events{
+		if event.Type==linebot.EventTypeFollow {
+			bot.ReplyMessage(event.ReplyToken,linebot.NewTextMessage(HELPMESSAGE))
+			db:=model.DBConnect()
+			defer db.Close()
 
+			userData:=domain.User{
+				Id:         event.Source.UserID,
+				IdType:     string(event.Source.Type),
+				Timestamp:  event.Timestamp,
+				ReplyToken: event.ReplyToken,
+				Status:     userStatusAvailable,
+			}
+			_,err:=db.Exec("INSERT INTO user (id, id_type, reply_token, status) VALUES (?,?,?,?,?)",userData.Id,userData.IdType,userData.Timestamp,userData.ReplyToken,userData.Status)
+			if err != nil {
+				log.Fatal(err)
+			}
+		}
 		if event.Type == linebot.EventTypeMessage {
+
 			switch event.Type {
 			case linebot.EventTypeFollow:
-				db:=model.DBConnect()
-				defer db.Close()
-				
-				userData:=domain.User{
-					Id:         event.Source.UserID,
-					IdType:     string(event.Source.Type),
-					Timestamp:  event.Timestamp,
-					ReplyToken: event.ReplyToken,
-					Status:     userStatusAvailable,
-				}
-				_,err:=db.Exec("INSERT INTO user (id, id_type, reply_token, status) VALUES (?,?,?,?,?)",userData.Id,userData.IdType,userData.Timestamp,userData.ReplyToken,userData.Status)
-				if err != nil {
-					log.Fatal(err)
-				}
+
 			case linebot.EventTypeMessage:
 				switch message := event.Message.(type) {
 				case *linebot.TextMessage:

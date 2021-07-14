@@ -1,18 +1,19 @@
 package model
 
 import (
-	"encoding/json"
 	"github.com/line/line-bot-sdk-go/linebot"
 	"github.com/xxarupakaxx/sample1-bot/domain"
-	"io/ioutil"
 	"log"
-	"net/http"
-	"os"
-	"strings"
 	"time"
 )
 
-func SerarchYoutubeChannel(channelName string) ([]domain.Video, error) {
+/*func SerarchYoutubeChannel(channelName string,s *youtube.Service) ([]domain.Video, error) {
+	list:=youtube.NewChannelsService(s)
+	result,err:=list.List([]string{"id","snippet"}).ForUsername(channelName).Do()
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(result.Items)
 	url:="https://www.googleapis.com/youtube/v3/search"
 
 	req,err:=http.NewRequest("GET",url,nil)
@@ -59,7 +60,7 @@ func SerarchYoutubeChannel(channelName string) ([]domain.Video, error) {
 		})
 	}
 	return videos,err
-}
+}*/
 
 func UserListGET(bot *linebot.Client,event *linebot.Event) []domain.Video {
 

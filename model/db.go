@@ -22,9 +22,9 @@ func DBConnect()(db *sql.DB) {
 			log.Fatal(err)
 		}
 		if err= db.Ping();err==nil{
-			log.Println("aaaaaaaaaaaaaaaaaaaaaaaa")
-		}else {
-			log.Println("failllllllllllllll")
+			log.Println("success")
+		}else{
+			log.Println("fail")
 		}
 	}else {
 		//local
@@ -33,14 +33,16 @@ func DBConnect()(db *sql.DB) {
 		dbUser:=os.Getenv("DB_USERNAME")
 		dbPass:=os.Getenv("DB_PASSWORD")
 		dbName:=os.Getenv("DB_NAME")
-		dboption:="?parseTime=true&loc=Asia%2FTokyo"
-		dataSource:=dbUser+":"+dbPass+"@tcp(us-cdbr-east-04.cleardb.com:3306)/"+dbName+dboption
+		dbOption:="?parseTime=true&loc=Asia%2FTokyo"
+		dataSource:=dbUser+":"+dbPass+"@tcp(us-cdbr-east-04.cleardb.com:3306)/"+dbName+dbOption
 		db,err:=sql.Open(dbDriver,dataSource)
 		if err != nil {
 			log.Fatal(err)
 		}
 		if err= db.Ping();err==nil{
-			log.Println("aaaaaaaaaaaaaaaaaaaaaaaa")
+			log.Println("success")
+		}else{
+			log.Println("fail")
 		}
 	}
 	return db
