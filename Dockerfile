@@ -1,7 +1,7 @@
 FROM golang:alpine as builder
 
 RUN apk update \
-    && apk add --no-cache git curl make gcc g++ \
+    && apk add --no-cache git curl make gcc g++
 ENV CGO_ENABLED=0
 ENV GOOS=linux
 ENV GOARCH=amd64
