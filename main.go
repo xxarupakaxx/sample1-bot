@@ -9,6 +9,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 )
 
 const (
@@ -82,7 +83,7 @@ func lineHandler(c echo.Context) error {
 			if err != nil {
 				_,err=db.Exec("INSERT INTO user VALUES (?,?,?,?,?)",userData.Id,userData.DisplayName,userData.IdType,userData.Timestamp,userData.ReplyToken)
 				if err != nil {
-					log.Fatal(err)
+					log.Fatalf("Couldnot add user:%v",err)
 				}
 			}
 
@@ -101,6 +102,11 @@ func lineHandler(c echo.Context) error {
 				text:=user.DisplayName+"さん\n"+HELPMESSAGE
 				if _,err:=bot.ReplyMessage(event.ReplyToken,linebot.NewTextMessage(text)).Do();err!=nil{
 					log.Fatalf("Failed in Replying message:%v",err)
+				}
+				if strings.Contains(message.Text, "weather") {
+					msq:=message.Text
+					code:=msq[len("weather")+1:]
+					model.SendWeather(bot,event,code)
 				}
 			}
 
