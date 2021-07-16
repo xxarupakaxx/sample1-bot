@@ -6,7 +6,6 @@ import (
 	"github.com/line/line-bot-sdk-go/linebot"
 	"github.com/xxarupakaxx/sample1-bot/domain"
 	"github.com/xxarupakaxx/sample1-bot/model"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -79,11 +78,16 @@ func lineHandler(c echo.Context) error {
 				Timestamp:  event.Timestamp,
 				ReplyToken: event.ReplyToken,
 			}
-			_,err=db.Exec("INSERT INTO user VALUES (?,?,?,?,?)",userData.Id,userData.DisplayName,userData.IdType,userData.Timestamp,userData.ReplyToken)
+			err=db.QueryRow("SELECT * from user where user.id=$1",userData.Id).Scan(&userData.Id, &userData.DisplayName,&userData.IdType,&userData.Timestamp,&userData.ReplyToken)
 			if err != nil {
-				log.Fatal(err)
+				_,err=db.Exec("INSERT INTO user VALUES (?,?,?,?,?)",userData.Id,userData.DisplayName,userData.IdType,userData.Timestamp,userData.ReplyToken)
+				if err != nil {
+					log.Fatal(err)
+				}
 			}
-			if _,err:=bot.PushMessage(userId,linebot.NewTextMessage(user.DisplayName+"さん\n"+HELPMESSAGE),linebot.NewStickerMessage("8522","16581267")).Do();err!=nil{
+
+			text:=user.DisplayName+"さん\n"+HELPMESSAGE
+			if _,err:=bot.PushMessage(userId,linebot.NewTextMessage(text),linebot.NewStickerMessage("8522","16581267")).Do();err!=nil{
 				log.Fatalf("Failed in Pushing message:%v",err)
 			}
 
@@ -100,8 +104,11 @@ func lineHandler(c echo.Context) error {
 
 		case *linebot.VideoMessage:
 			url:=message.OriginalContentURL
+			if _, err := bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(url)).Do(); err != nil {
+				log.Fatalf("Failed in getting url:%v",err)
+			}
 			//preUrl:=message.PreviewImageURL
-			result,err:=http.Get(url)
+			/*result,err:=http.Get(url)
 			if err != nil {
 				log.Fatalf("Failed in Getting url:%v",err)
 			}
@@ -112,7 +119,7 @@ func lineHandler(c echo.Context) error {
 			}
 			if _,err:=bot.ReplyMessage(event.ReplyToken,linebot.NewTextMessage(string(body))).Do();err!=nil{
 				log.Fatalf("Failed in Replying message:%v",err)
-			}
+			}*/
 		}
 	}
 	return c.String(http.StatusOK,"OK")
