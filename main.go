@@ -97,13 +97,15 @@ func lineHandler(c echo.Context) error {
 			model.SendRestoInfo(bot,event)
 		case *linebot.TextMessage:
 			if message.Text == "help" {
-				if _,err:=bot.ReplyMessage(event.ReplyToken,linebot.NewTextMessage(HELPMESSAGE)).Do();err!=nil{
+				user,_:=bot.GetProfile(event.Source.UserID).Do()
+				text:=user.DisplayName+"さん\n"+HELPMESSAGE
+				if _,err:=bot.ReplyMessage(event.ReplyToken,linebot.NewTextMessage(text)).Do();err!=nil{
 					log.Fatalf("Failed in Replying message:%v",err)
 				}
 			}
 
 		case *linebot.VideoMessage:
-			if _, err := bot.ReplyMessage(event.ReplyToken, linebot.NewVideoMessage(message.OriginalContentURL,message.PreviewImageURL)).Do(); err != nil {
+			if _, err := bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage("未実装")).Do(); err != nil {
 				log.Fatalf("Failed in getting url:%v",err)
 			}
 
