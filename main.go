@@ -105,7 +105,7 @@ func lineHandler(c echo.Context) error {
 				}
 				if strings.Contains(message.Text, "weather") {
 					msq:=message.Text
-					code:=msq[len("weather")+1:]
+					code:=msq[len("weather "):]
 					model.SendWeather(bot,event,code)
 				}
 			}
