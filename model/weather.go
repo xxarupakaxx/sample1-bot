@@ -25,6 +25,7 @@ func getWeather(code string) *domain.Weather{
 	if err := json.Unmarshal(body, &data); err != nil {
 		log.Fatalf("Failed in Changing Json: %v",err)
 	}
+	log.Println(data)
 	return data
 }
 func SendWeather(bot *linebot.Client, event *linebot.Event,code string) {
