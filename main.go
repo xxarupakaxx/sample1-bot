@@ -103,11 +103,10 @@ func lineHandler(c echo.Context) error {
 			}
 
 		case *linebot.VideoMessage:
-			url:=message.OriginalContentURL
-			if _, err := bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(url)).Do(); err != nil {
+			if _, err := bot.ReplyMessage(event.ReplyToken, linebot.NewVideoMessage(message.OriginalContentURL,message.PreviewImageURL)).Do(); err != nil {
 				log.Fatalf("Failed in getting url:%v",err)
 			}
-			//preUrl:=message.PreviewImageURL
+
 			/*result,err:=http.Get(url)
 			if err != nil {
 				log.Fatalf("Failed in Getting url:%v",err)
