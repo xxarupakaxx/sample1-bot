@@ -722,22 +722,22 @@
       <Position>1</Position>
       <DataType>varchar(255)|0s</DataType>
     </column>
-    <column id="227" parent="224" name="id_type">
+    <column id="227" parent="224" name="displayName">
       <Position>2</Position>
       <DataType>varchar(255)|0s</DataType>
     </column>
-    <column id="228" parent="224" name="timestamp">
+    <column id="228" parent="224" name="id_type">
       <Position>3</Position>
+      <DataType>varchar(255)|0s</DataType>
+    </column>
+    <column id="229" parent="224" name="timestamp">
+      <Position>4</Position>
       <DataType>timestamp|0s</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
       <OnUpdate>CURRENT_TIMESTAMP</OnUpdate>
     </column>
-    <column id="229" parent="224" name="reply_token">
-      <Position>4</Position>
-      <DataType>varchar(255)|0s</DataType>
-    </column>
-    <column id="230" parent="224" name="status">
+    <column id="230" parent="224" name="reply_token">
       <Position>5</Position>
       <DataType>varchar(255)|0s</DataType>
     </column>

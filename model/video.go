@@ -5,8 +5,10 @@ import (
 	"github.com/xxarupakaxx/sample1-bot/domain"
 	"log"
 	"time"
-)
-
+)/*
+func JoinVideo(bot *linebot.Client, message *linebot.VideoMessage) {
+	url:=message.OriginalContentURL
+}*/
 /*func SerarchYoutubeChannel(channelName string,s *youtube.Service) ([]domain.Video, error) {
 	list:=youtube.NewChannelsService(s)
 	result,err:=list.List([]string{"id","snippet"}).ForUsername(channelName).Do()
