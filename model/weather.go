@@ -10,7 +10,7 @@ import (
 	"net/http"
 )
 
-func getWeather(code string) domain.Weather{
+func getWeather(code string) *domain.Weather{
 	url := fmt.Sprintf("https://weather.tsukumijima.net/api/forecast/city/%s", code)
 	res,err:=http.Get(url)
 	if err != nil {
@@ -21,7 +21,7 @@ func getWeather(code string) domain.Weather{
 	if err != nil {
 		log.Fatalf("Failed in Reading https://weather.tsukumijima.net/api/forecast/city/ response :%v",err)
 	}
-	var data domain.Weather
+	var data *domain.Weather
 	if err := json.Unmarshal(body, &data); err != nil {
 		log.Fatalf("Failed in Changing Json: %v",err)
 	}
