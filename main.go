@@ -225,12 +225,12 @@ func lineHandler(c echo.Context) error {
 						Type: linebot.FlexContainerTypeBubble,
 						Body: &linebot.BoxComponent{
 							Type:            linebot.FlexComponentTypeBox,
-							Layout:          linebot.FlexBoxLayoutTypeVertical,
+							Layout:          linebot.FlexBoxLayoutTypeHorizontal,
 							Contents:        []linebot.FlexComponent{
 								&linebot.TextComponent{
 									Type:       linebot.FlexComponentTypeText,
 									Text:       text,
-									Gravity:    linebot.FlexComponentGravityTypeTop,
+									Gravity:    linebot.FlexComponentGravityTypeCenter,
 									Color:      "#473232",
 									Style:      linebot.FlexTextStyleTypeItalic,
 									Decoration: linebot.FlexTextDecorationTypeUnderline,
