@@ -102,12 +102,13 @@ func lineHandler(c echo.Context) error {
 				if _,err:=bot.ReplyMessage(event.ReplyToken,linebot.NewTextMessage(text)).Do();err!=nil{
 					log.Fatalf("Failed in Replying message:%v",err)
 				}
-				if strings.Contains(message.Text, "weather") {
-					log.Println("weather!!!!!!!!!!!!")
-					msg:=message.Text
-					code:=msg[len("weather "):len(msg)]
-					model.SendWeather(bot,event,code)
-				}
+
+			}
+			if strings.Contains(message.Text, "weather") {
+				log.Println("weather!!!!!!!!!!!!")
+				msg:=message.Text
+				code:=msg[len("weather "):len(msg)]
+				model.SendWeather(bot,event,code)
 			}
 
 		case *linebot.VideoMessage:
