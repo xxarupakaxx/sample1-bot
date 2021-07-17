@@ -163,7 +163,7 @@ func lineHandler(c echo.Context) error {
 						Type: linebot.FlexContainerTypeBubble,
 						Body: &linebot.BoxComponent{
 							Type:            linebot.FlexComponentTypeBox,
-							Layout:          linebot.FlexBoxLayoutTypeBaseline,
+							Layout:          linebot.FlexBoxLayoutTypeVertical,
 							Contents:        []linebot.FlexComponent{
 								&linebot.TextComponent{
 									Type:       linebot.FlexComponentTypeText,
@@ -175,7 +175,7 @@ func lineHandler(c echo.Context) error {
 								},
 								&linebot.TextComponent{
 									Type:       linebot.FlexComponentTypeText,
-									Text:       text,
+									Text:       "text",
 									Contents:   []*linebot.SpanComponent{
 										{
 											Type:   linebot.FlexComponentTypeSpan,
@@ -188,12 +188,12 @@ func lineHandler(c echo.Context) error {
 										},
 										{
 											Type:   linebot.FlexComponentTypeSpan,
-											Text:   "weather1",
+											Text:   "140010",
 											Size:   linebot.FlexTextSizeTypeLg,
 											Weight: linebot.FlexTextWeightTypeRegular,
 											Color:  "#91f89d",
 											Style:  linebot.FlexTextStyleTypeNormal,
-											Decoration: linebot.FlexTextDecorationTypeLineThrough,
+											Decoration: linebot.FlexTextDecorationTypeNone,
 										},
 									},
 									Flex:       linebot.IntPtr(3),
@@ -211,7 +211,7 @@ func lineHandler(c echo.Context) error {
 								},
 							},
 							CornerRadius:  linebot.FlexComponentCornerRadiusTypeXl  ,
-							BackgroundColor: "#6de765",
+							//BackgroundColor: "#6de765",
 							BorderColor:     "#3BAF75",
 							Action:         linebot.NewURIAction("tameda","https://twitter.com/TamerNazeda") ,
 						},
