@@ -22,7 +22,7 @@ func DBConnect()(db *sql.DB) {
 			log.Fatal(err)
 		}
 		if err= db.Ping();err==nil{
-			log.Println("success")
+			log.Println("1success")
 		}else{
 			log.Println("fail")
 		}
@@ -40,7 +40,7 @@ func DBConnect()(db *sql.DB) {
 			log.Fatal(err)
 		}
 		if err= db.Ping();err==nil{
-			log.Println("success")
+			log.Println("2success")
 		}else{
 			log.Println("fail")
 		}

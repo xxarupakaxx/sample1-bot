@@ -41,7 +41,6 @@ func main() {
 }
 
 func lineHandler(c echo.Context) error {
-
 	bot, err := linebot.New(
 		os.Getenv("CHANNEL_SECRET"),
 		os.Getenv("CHANNEL_TOKEN"),
@@ -104,8 +103,9 @@ func lineHandler(c echo.Context) error {
 					log.Fatalf("Failed in Replying message:%v",err)
 				}
 				if strings.Contains(message.Text, "weather") {
-					msq:=message.Text
-					code:=msq[len("weather "):]
+					log.Println("weather!!!!!!!!!!!!")
+					msg:=message.Text
+					code:=msg[len("weather "):len(msg)]
 					model.SendWeather(bot,event,code)
 				}
 			}
