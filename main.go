@@ -81,7 +81,7 @@ func lineHandler(c echo.Context) error {
 				Action:         linebot.NewURIAction("tameda","https://twitter.com/TamerNazeda") ,
 			},
 		},
-	))
+	)).Do()
 
 	for _,event:=range events{
 		if event.Type==linebot.EventTypeFollow {
