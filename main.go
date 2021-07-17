@@ -105,7 +105,7 @@ func lineHandler(c echo.Context) error {
 			}
 			if message.Text=="tameda" {
 				text:=user.DisplayName+"がtamedaと送信しました"
-				bot.ReplyMessage(event.ReplyToken,linebot.NewFlexMessage("メンテナンス終了",
+				bot.ReplyMessage(event.ReplyToken,linebot.NewFlexMessage("tameda",
 					&linebot.BubbleContainer{
 						Type: linebot.FlexContainerTypeBubble,
 						Body: &linebot.BoxComponent{
@@ -136,13 +136,66 @@ func lineHandler(c echo.Context) error {
 									},
 									Flex:       linebot.IntPtr(1),
 									Margin:     linebot.FlexComponentMarginTypeSm,
-									Size:       linebot.FlexTextSizeTypeXxl,
+									Size:       linebot.FlexTextSizeTypeSm,
 									Align:      linebot.FlexComponentAlignTypeEnd,
 									Gravity:    linebot.FlexComponentGravityTypeBottom,
 									Wrap:       true,
 									Weight:     linebot.FlexTextWeightTypeBold,
 									Color:      "#ebf891",
-									Action:     linebot.NewMessageAction("tamedaKOUYA","help"),
+									Action:     linebot.NewMessageAction("weather","weather 140010"),
+									Style:      linebot.FlexTextStyleTypeItalic,
+									Decoration: linebot.FlexTextDecorationTypeUnderline,
+									MaxLines:   linebot.IntPtr(5),
+								},
+							},
+							CornerRadius:  linebot.FlexComponentCornerRadiusTypeXl  ,
+							BackgroundColor: "#6de765",
+							BorderColor:     "#3BAF75",
+							Action:         linebot.NewURIAction("tameda","https://twitter.com/TamerNazeda") ,
+						},
+					},
+				)).Do()
+			}
+			if message.Text=="tameda1" {
+				text:=user.DisplayName+"がtameda1と送信しました"
+				bot.ReplyMessage(event.ReplyToken,linebot.NewFlexMessage("tameda1",
+					&linebot.BubbleContainer{
+						Type: linebot.FlexContainerTypeBubble,
+						Body: &linebot.BoxComponent{
+							Type:            linebot.FlexComponentTypeBox,
+							Layout:          linebot.FlexBoxLayoutTypeBaseline,
+							Contents:        []linebot.FlexComponent{
+								&linebot.TextComponent{
+									Type:       linebot.FlexComponentTypeText,
+									Text:       text,
+									Gravity:    linebot.FlexComponentGravityTypeBottom,
+									Color:      "#473232",
+									Style:      linebot.FlexTextStyleTypeItalic,
+									Decoration: linebot.FlexTextDecorationTypeUnderline,
+								},
+								&linebot.TextComponent{
+									Type:       linebot.FlexComponentTypeText,
+									Text:       text,
+									Contents:   []*linebot.SpanComponent{
+										{
+											Type:   linebot.FlexComponentTypeSpan,
+											Text:   "tamedakouya",
+											Size:   linebot.FlexTextSizeTypeXxl,
+											Weight: linebot.FlexTextWeightTypeBold,
+											Color:  "#91f89d",
+											Style:  linebot.FlexTextStyleTypeItalic,
+											Decoration: linebot.FlexTextDecorationTypeUnderline,
+										},
+									},
+									Flex:       linebot.IntPtr(3),
+									Margin:     linebot.FlexComponentMarginTypeSm,
+									Size:       linebot.FlexTextSizeTypeSm,
+									Align:      linebot.FlexComponentAlignTypeEnd,
+									Gravity:    linebot.FlexComponentGravityTypeBottom,
+									Wrap:       false,
+									Weight:     linebot.FlexTextWeightTypeBold,
+									Color:      "#6443d9",
+									Action:     linebot.NewMessageAction("weather","weather 140010"),
 									Style:      linebot.FlexTextStyleTypeItalic,
 									Decoration: linebot.FlexTextDecorationTypeUnderline,
 									MaxLines:   linebot.IntPtr(5),
