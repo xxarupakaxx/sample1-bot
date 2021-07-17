@@ -120,19 +120,19 @@ func lineHandler(c echo.Context) error {
 									Style:      linebot.FlexTextStyleTypeNormal,
 									Decoration: linebot.FlexTextDecorationTypeUnderline,
 								},*/
-								&linebot.BoxComponent{
+								/*&linebot.BoxComponent{
 									Type:            linebot.FlexComponentTypeBox,
 									Layout:          linebot.FlexBoxLayoutTypeHorizontal,
 									CornerRadius:    linebot.FlexComponentCornerRadiusTypeXl,
 									BackgroundColor: "#e2e765",
-								},
-								/*&linebot.ButtonComponent{
+								},*/
+								&linebot.ButtonComponent{
 									Type:    linebot.FlexComponentTypeButton,
 									Action:  linebot.NewMessageAction("tameda", "うーん"),
 									Style:   linebot.FlexButtonStyleTypeSecondary,
 									Color:   "#65bae7",
 									Gravity: linebot.FlexComponentGravityTypeBottom,
-								},*/
+								},
 							},
 							CornerRadius:  linebot.FlexComponentCornerRadiusTypeMd  ,
 							BackgroundColor: "#6de765",
