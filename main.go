@@ -59,7 +59,29 @@ func lineHandler(c echo.Context) error {
 	if err != nil {
 		log.Fatal(err)
 	}
-
+	bot.BroadcastMessage(linebot.NewFlexMessage("メンテナンス終了",
+		&linebot.BubbleContainer{
+			Type: linebot.FlexContainerTypeBubble,
+			Body: &linebot.BoxComponent{
+				Type:            linebot.FlexComponentTypeBox,
+				Layout:          linebot.FlexBoxLayoutTypeVertical,
+				Contents:        []linebot.FlexComponent{
+					&linebot.TextComponent{
+						Type:       linebot.FlexComponentTypeText,
+						Text:       "メンテナンス終わったち",
+						Gravity:    linebot.FlexComponentGravityTypeCenter,
+						Color:      "#EFE8D7",
+						Style:      linebot.FlexTextStyleTypeItalic,
+						Decoration: linebot.FlexTextDecorationTypeUnderline,
+					},
+				},
+				CornerRadius:  linebot.FlexComponentCornerRadiusTypeLg  ,
+				BackgroundColor: "#2595C7",
+				BorderColor:     "#3BAF75",
+				Action:         linebot.NewURIAction("tameda","https://twitter.com/TamerNazeda") ,
+			},
+		},
+	))
 
 	for _,event:=range events{
 		if event.Type==linebot.EventTypeFollow {
@@ -105,9 +127,8 @@ func lineHandler(c echo.Context) error {
 
 			}
 			if strings.Contains(message.Text, "weather") {
-				log.Println("weather!!!!!!!!!!!!")
 				msg:=message.Text
-				code:=msg[len("weather "):len(msg)]
+				code:=msg[len("weather "):]
 				model.SendWeather(bot,event,code)
 			}
 
