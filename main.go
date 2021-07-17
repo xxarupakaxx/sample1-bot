@@ -104,7 +104,7 @@ func lineHandler(c echo.Context) error {
 
 			}
 			if message.Text=="tameda" {
-				text:=user.DisplayName+"がtamedaと送信しました"
+				//text:=user.DisplayName+"がtamedaと送信しました"
 				bot.ReplyMessage(event.ReplyToken,linebot.NewFlexMessage("メンテナンス終了",
 					&linebot.BubbleContainer{
 						Type: linebot.FlexContainerTypeBubble,
@@ -112,27 +112,6 @@ func lineHandler(c echo.Context) error {
 							Type:            linebot.FlexComponentTypeBox,
 							Layout:          linebot.FlexBoxLayoutTypeBaseline,
 							Contents:        []linebot.FlexComponent{
-								&linebot.TextComponent{
-									Type:       linebot.FlexComponentTypeText,
-									Text:       text,
-									Gravity:    linebot.FlexComponentGravityTypeTop,
-									Color:      "#e76565",
-									Style:      linebot.FlexTextStyleTypeNormal,
-									Decoration: linebot.FlexTextDecorationTypeUnderline,
-								},
-								&linebot.BoxComponent{
-									Type:            linebot.FlexComponentTypeBox,
-									Layout:          linebot.FlexBoxLayoutTypeHorizontal,
-									CornerRadius:    linebot.FlexComponentCornerRadiusTypeXl,
-									BackgroundColor: "#e2e765",
-								},
-								&linebot.ButtonComponent{
-									Type:    linebot.FlexComponentTypeButton,
-									Action:  linebot.NewMessageAction("tameda", "うーん"),
-									Style:   linebot.FlexButtonStyleTypeSecondary,
-									Color:   "#65bae7",
-									Gravity: linebot.FlexComponentGravityTypeBottom,
-								},
 								&linebot.ImageComponent{
 									Type:            linebot.FlexComponentTypeImage,
 									URL:             "https://pbs.twimg.com/profile_images/1364204318790836232/dgyZpvy6_400x400.jpg",
