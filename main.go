@@ -59,29 +59,7 @@ func lineHandler(c echo.Context) error {
 	if err != nil {
 		log.Fatal(err)
 	}
-	bot.BroadcastMessage(linebot.NewFlexMessage("メンテナンス終了",
-		&linebot.BubbleContainer{
-			Type: linebot.FlexContainerTypeBubble,
-			Body: &linebot.BoxComponent{
-				Type:            linebot.FlexComponentTypeBox,
-				Layout:          linebot.FlexBoxLayoutTypeVertical,
-				Contents:        []linebot.FlexComponent{
-					&linebot.TextComponent{
-						Type:       linebot.FlexComponentTypeText,
-						Text:       "メンテナンス終わったち",
-						Gravity:    linebot.FlexComponentGravityTypeCenter,
-						Color:      "#EFE8D7",
-						Style:      linebot.FlexTextStyleTypeItalic,
-						Decoration: linebot.FlexTextDecorationTypeUnderline,
-					},
-				},
-				CornerRadius:  linebot.FlexComponentCornerRadiusTypeLg  ,
-				BackgroundColor: "#2595C7",
-				BorderColor:     "#3BAF75",
-				Action:         linebot.NewURIAction("tameda","https://twitter.com/TamerNazeda") ,
-			},
-		},
-	)).Do()
+
 
 	for _,event:=range events{
 		if event.Type==linebot.EventTypeFollow {
@@ -118,13 +96,39 @@ func lineHandler(c echo.Context) error {
 		case *linebot.LocationMessage:
 			model.SendRestoInfo(bot,event)
 		case *linebot.TextMessage:
+			user,_:=bot.GetProfile(event.Source.UserID).Do()
 			if message.Text == "help" {
-				user,_:=bot.GetProfile(event.Source.UserID).Do()
 				text:=user.DisplayName+"さん\n"+HELPMESSAGE
 				if _,err:=bot.ReplyMessage(event.ReplyToken,linebot.NewTextMessage(text)).Do();err!=nil{
 					log.Fatalf("Failed in Replying message:%v",err)
 				}
 
+			}
+			if message.Text=="tameda" {
+				text:=user.DisplayName+"がtamedaと送信しました"
+				bot.BroadcastMessage(linebot.NewFlexMessage("メンテナンス終了",
+					&linebot.BubbleContainer{
+						Type: linebot.FlexContainerTypeBubble,
+						Body: &linebot.BoxComponent{
+							Type:            linebot.FlexComponentTypeBox,
+							Layout:          linebot.FlexBoxLayoutTypeBaseline,
+							Contents:        []linebot.FlexComponent{
+								&linebot.TextComponent{
+									Type:       linebot.FlexComponentTypeText,
+									Text:       text,
+									Gravity:    linebot.FlexComponentGravityTypeTop,
+									Color:      "#e76565",
+									Style:      linebot.FlexTextStyleTypeNormal,
+									Decoration: linebot.FlexTextDecorationTypeLineThrough,
+								},
+							},
+							CornerRadius:  linebot.FlexComponentCornerRadiusTypeMd  ,
+							BackgroundColor: "#6de765",
+							BorderColor:     "#3BAF75",
+							Action:         linebot.NewURIAction("tameda","https://twitter.com/TamerNazeda") ,
+						},
+					},
+				)).Do()
 			}
 			if strings.Contains(message.Text, "weather") {
 				msg:=message.Text
