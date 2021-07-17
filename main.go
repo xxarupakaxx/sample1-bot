@@ -54,7 +54,6 @@ func lineHandler(c echo.Context) error {
 		return err
 	}
 
-	//youtebeAPI:=os.Getenv("YOUTUBE_APIKEY")
 	events,err:=bot.ParseRequest(c.Request())
 	if err != nil {
 		log.Fatal(err)

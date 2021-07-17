@@ -33,7 +33,7 @@ func SendWeather(bot *linebot.Client, event *linebot.Event,code string) {
 	if _, err := bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(message)).Do(); err != nil {
 		log.Fatalf("Coundnot posting weather:%v",err)
 	}
-	resp:=linebot.NewTemplateMessage(
+	/*resp:=linebot.NewTemplateMessage(
 		"weather",
 		linebot.NewButtonsTemplate(
 				"https://weather.tsukumijima.net/logo.png",
@@ -51,6 +51,6 @@ func SendWeather(bot *linebot.Client, event *linebot.Event,code string) {
 		)
 	if _,err:=bot.ReplyMessage(event.ReplyToken,resp).Do();err!=nil{
 		log.Fatalf("coundnot sending resp:%v",err)
-	}
+	}*/
 
 }
