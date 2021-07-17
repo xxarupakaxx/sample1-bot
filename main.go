@@ -112,27 +112,27 @@ func lineHandler(c echo.Context) error {
 							Type:            linebot.FlexComponentTypeBox,
 							Layout:          linebot.FlexBoxLayoutTypeBaseline,
 							Contents:        []linebot.FlexComponent{
-								&linebot.TextComponent{
+								/*&linebot.TextComponent{
 									Type:       linebot.FlexComponentTypeText,
 									Text:       text,
 									Gravity:    linebot.FlexComponentGravityTypeTop,
 									Color:      "#e76565",
 									Style:      linebot.FlexTextStyleTypeNormal,
 									Decoration: linebot.FlexTextDecorationTypeUnderline,
-								},
+								},*/
 								&linebot.BoxComponent{
 									Type:            linebot.FlexComponentTypeBox,
 									Layout:          linebot.FlexBoxLayoutTypeHorizontal,
 									CornerRadius:    linebot.FlexComponentCornerRadiusTypeXl,
 									BackgroundColor: "#e2e765",
 								},
-								&linebot.ButtonComponent{
+								/*&linebot.ButtonComponent{
 									Type:    linebot.FlexComponentTypeButton,
 									Action:  linebot.NewMessageAction("tameda", "うーん"),
 									Style:   linebot.FlexButtonStyleTypeSecondary,
 									Color:   "#65bae7",
 									Gravity: linebot.FlexComponentGravityTypeBottom,
-								},
+								},*/
 							},
 							CornerRadius:  linebot.FlexComponentCornerRadiusTypeMd  ,
 							BackgroundColor: "#6de765",
