@@ -104,7 +104,7 @@ func lineHandler(c echo.Context) error {
 
 			}
 			if message.Text=="tameda" {
-				text:=user.DisplayName+"がtamedaと送信しました"
+				//text:=user.DisplayName+"がtamedaと送信しました"
 				bot.ReplyMessage(event.ReplyToken,linebot.NewFlexMessage("メンテナンス終了",
 					&linebot.BubbleContainer{
 						Type: linebot.FlexContainerTypeBubble,
