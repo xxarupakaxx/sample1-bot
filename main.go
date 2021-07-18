@@ -591,6 +591,9 @@ func lineHandler(c echo.Context) error {
 					},
 				)).Do()
 			}
+			if message.Text=="TAMEDA" {
+				debugFlex(bot,event)
+			}
 			if strings.Contains(message.Text, "weather") {
 				msg:=message.Text
 				code:=msg[len("weather "):]
@@ -620,4 +623,6 @@ func lineHandler(c echo.Context) error {
 	return c.String(http.StatusOK,"OK")
 
 }
+
+
 
