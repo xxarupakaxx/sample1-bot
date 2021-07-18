@@ -4,7 +4,6 @@ import (
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 	"github.com/line/line-bot-sdk-go/linebot"
-	"github.com/xxarupakaxx/sample1-bot/domain"
 	"github.com/xxarupakaxx/sample1-bot/model"
 	"log"
 	"net/http"
@@ -41,8 +40,8 @@ func main() {
 }
 
 func lineHandler(c echo.Context) error {
-	db:=model.DBConnect()
-	defer db.Close()
+	/*db:=model.DBConnect()
+	defer db.Close()*/
 	bot, err := linebot.New(
 		os.Getenv("CHANNEL_SECRET"),
 		os.Getenv("CHANNEL_TOKEN"),
@@ -63,7 +62,7 @@ func lineHandler(c echo.Context) error {
 
 
 	for _,event:=range events{
-		if event.Type==linebot.EventTypeFollow {
+		/*if event.Type==linebot.EventTypeFollow {
 			userId:=event.Source.UserID
 			user,err:=bot.GetProfile(userId).Do()
 			if err!=nil{
@@ -92,7 +91,7 @@ func lineHandler(c echo.Context) error {
 				log.Fatalf("Failed in Pushing message:%v",err)
 			}
 
-		}
+		}*/
 		switch message := event.Message.(type) {
 		case *linebot.LocationMessage:
 			model.SendRestoInfo(bot,event)
