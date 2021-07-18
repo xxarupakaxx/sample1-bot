@@ -43,7 +43,7 @@ func debugFlex(bot *linebot.Client, event *linebot.Event)  {
 			Contents:        []linebot.FlexComponent{
 				&linebot.TextComponent{
 					Type: linebot.FlexComponentTypeText,
-					Text: nil,
+					Text: "test",
 					Contents:   []*linebot.SpanComponent{
 						{
 							Type:       linebot.FlexComponentTypeSpan,
