@@ -210,7 +210,7 @@ func debugFlex(bot *linebot.Client, event *linebot.Event)  {
 					SeparatorColor:  "",
 				},
 				Body:   &linebot.BlockStyle{
-					BackgroundColor: "##c01dcf",
+					BackgroundColor: "#c01dcf",
 					Separator:       false,
 					SeparatorColor:  "",
 				},
