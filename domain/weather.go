@@ -15,15 +15,11 @@ type Forecasts struct {
 	Date      string `json:"date"`
 	DateLabel string `json:"dateLabel"`
 	Telop     string `json:"telop"`
-	Detail    Detail `json:"detail"`
 	Temperature Temperature `json:"temperature"`
 	ChanceOfRain ChanceOfRain `json:"chanceOfRain"`
+	Image Image `json:"image"`
 }
-type Detail struct {
-	Weather string `json:"weather"`
-	Wind    string `json:"wind"`
-	Wave    string `json:"wave"`
-}
+
 type Temperature struct{
 	Max Max `json:"max"`
 	Min Min `json:"min"`
@@ -39,4 +35,8 @@ type ChanceOfRain struct {
 	T0612 string `json:"T06_12"`
 	T1218 string `json:"T12_18"`
 	T1824 string `json:"T18_24"`
+}
+type Image struct {
+	Title  string `json:"title"`
+	URL    string `json:"url"`
 }
