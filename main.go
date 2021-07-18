@@ -42,6 +42,7 @@ func main() {
 
 func lineHandler(c echo.Context) error {
 	db:=model.DBConnect()
+	defer db.Close()
 	bot, err := linebot.New(
 		os.Getenv("CHANNEL_SECRET"),
 		os.Getenv("CHANNEL_TOKEN"),
@@ -619,7 +620,6 @@ func lineHandler(c echo.Context) error {
 			}*/
 		}
 	}
-	defer db.Close()
 	return c.String(http.StatusOK,"OK")
 
 }

@@ -138,7 +138,9 @@ func debugFlex(bot *linebot.Client, event *linebot.Event)  {
 						Style:      linebot.FlexTextStyleTypeItalic,
 						Decoration: linebot.FlexTextDecorationTypeNone,
 						MaxLines:   linebot.IntPtr(5),
-			},},},
+			},
+				},
+			},
 			Footer:    &linebot.BoxComponent{
 				Type:            linebot.FlexComponentTypeBox,
 				Layout:          linebot.FlexBoxLayoutTypeBaseline,
