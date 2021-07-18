@@ -9,7 +9,7 @@ ENV GOARCH=amd64
 WORKDIR /go/src/github.com/xxarupakaxx/sample1-bot
 COPY . .
 RUN go mod download \
-    && go build main.go
+    && go build main.go debug.go
 
 FROM alpine
 COPY --from=builder /go/src/github.com/xxarupakaxx/sample1-bot /app
