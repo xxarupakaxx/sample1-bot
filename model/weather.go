@@ -29,10 +29,121 @@ func GetWeather(code string) *domain.Weather{
 }
 func SendWeather(bot *linebot.Client, event *linebot.Event,code string) {
 	data:=GetWeather(code)
-	message:=data.Title+"\n"+data.PublicTimeFormatted + data.Description.Text +"\n今日は"+data.Forecasts[0].Telop+"です\nまた、最高気温が"+data.Forecasts[0].Temperature.Max.Celsius+"\n最低気温が"+data.Forecasts[0].Temperature.Min.Celsius+"です\n0 時から 6 時までの降水確率は"+data.Forecasts[0].ChanceOfRain.T0006+"\n"+"6 時から 12 時までの降水確率"+data.Forecasts[0].ChanceOfRain.T0612+"\n"+"12 時から 18 時までの降水確率"+data.Forecasts[0].ChanceOfRain.T1218+"\n"+"18 時から 24 時までの降水確率は"+data.Forecasts[0].ChanceOfRain.T1824+"となるでしょう"
+	resp:=linebot.NewFlexMessage("Weather Information",&linebot.BubbleContainer{
+		Type:      linebot.FlexContainerTypeBubble,
+		Direction: linebot.FlexBubbleDirectionTypeLTR,
+		Header:    &linebot.BoxComponent{
+			Type:            linebot.FlexComponentTypeBox,
+			Layout:          linebot.FlexBoxLayoutTypeBaseline,
+			Contents:        []linebot.FlexComponent{
+				&linebot.TextComponent{
+					Type:       linebot.FlexComponentTypeText,
+					Text:       "今日の天気",
+					Size:       linebot.FlexTextSizeTypeLg,
+					Align:      linebot.FlexComponentAlignTypeCenter,
+					Weight:     linebot.FlexTextWeightTypeBold,
+					//Color:      "",
+					//Action:     nil,
+				},
+			},
+			CornerRadius:    linebot.FlexComponentCornerRadiusTypeXxl,
+			BorderColor:     "#00bfff",
+			//Action: nil,
+		},
+		Hero:      &linebot.ImageComponent{
+			Type:            linebot.FlexComponentTypeImage,
+			URL:             data.Forecasts[0].Image.URL,
+			Size:            linebot.FlexImageSizeTypeXxl,
+			AspectRatio:     linebot.FlexImageAspectRatioType1to1,
+			AspectMode:      linebot.FlexImageAspectModeTypeFit,
+			//Action:          nil,
+		},
+		Body:      &linebot.BoxComponent{
+			Type:            linebot.FlexComponentTypeBox,
+			Layout:          linebot.FlexBoxLayoutTypeVertical,
+			Contents:        []linebot.FlexComponent{
+				&linebot.TextComponent{
+					Type: linebot.FlexComponentTypeText,
+					Text: "test",
+					Contents:   []*linebot.SpanComponent{
+						{
+							Type:       linebot.FlexComponentTypeSpan,
+							Text:       "最高気温 : " + data.Forecasts[0].Temperature.Max.Celsius + "℃",
+							Size:       linebot.FlexTextSizeTypeXxl,
+							Weight:     linebot.FlexTextWeightTypeBold,
+							Color:      "#fc0703",
+							Decoration: linebot.FlexTextDecorationTypeUnderline,
+						},
+						{
+							Type:       linebot.FlexComponentTypeSpan,
+							Text:       "最低気温 : " + data.Forecasts[0].Temperature.Min.Celsius + "℃",
+							Size:       linebot.FlexTextSizeTypeSm,
+							Color:      "#03befc",
+						},
+					},
+					Flex:       linebot.IntPtr(2),
+					Size:       linebot.FlexTextSizeTypeSm,
+					Wrap:       false,
+					//Action:     nil,
+					MaxLines:   linebot.IntPtr(2),
+				},
+				&linebot.TextComponent{
+					Type:       linebot.FlexComponentTypeText,
+					Text:       data.Description.Text,
+					//Contents:   nil,
+					Flex:       linebot.IntPtr(3),
+					Size:       linebot.FlexTextSizeTypeSm,
+					Wrap:       false,
+					//Color:      "",
+					//Action:     nil,
+					MaxLines:   linebot.IntPtr(5),
+				},
+			},
+			BorderColor:     "#5cd8f7",
+			//Action:          nil,
+		},
+		Footer:    &linebot.BoxComponent{
+			Type:            linebot.FlexComponentTypeBox,
+			Layout:          linebot.FlexBoxLayoutTypeBaseline,
+			Contents:        []linebot.FlexComponent{
+				&linebot.ButtonComponent{
+					Type:    linebot.FlexComponentTypeButton,
+					Action:  linebot.NewURIAction("Weather URL", data.Link),
+					Style:   linebot.FlexButtonStyleTypeLink,
+					Color:   "#5cf7ac",
+				},
+			},
+			CornerRadius:    linebot.FlexComponentCornerRadiusTypeMd,
+			//BackgroundColor: "",
+			BorderColor:     "#5cf7ac",
+			//Action:          nil,
+		},
+		Styles:    &linebot.BubbleStyle{
+			Header: &linebot.BlockStyle{
+				Separator:      true,
+
+			},
+			Hero:   &linebot.BlockStyle{
+				Separator:      true,
+
+			},
+			Body:   &linebot.BlockStyle{
+				Separator:      true,
+
+			},
+			Footer: &linebot.BlockStyle{
+				Separator:      false,
+
+			},
+		},
+	})
+	if _,err:=bot.ReplyMessage(event.ReplyToken,resp).Do();err != nil {
+		log.Fatalf("debug.go error :%v",err)
+	}
+	/*message:=data.Title+"\n"+data.PublicTimeFormatted + data.Description.Text +"\n今日は"+data.Forecasts[0].Telop+"です\nまた、最高気温が"+data.Forecasts[0].Temperature.Max.Celsius+"\n最低気温が"+data.Forecasts[0].Temperature.Min.Celsius+"です\n0 時から 6 時までの降水確率は"+data.Forecasts[0].ChanceOfRain.T0006+"\n"+"6 時から 12 時までの降水確率"+data.Forecasts[0].ChanceOfRain.T0612+"\n"+"12 時から 18 時までの降水確率"+data.Forecasts[0].ChanceOfRain.T1218+"\n"+"18 時から 24 時までの降水確率は"+data.Forecasts[0].ChanceOfRain.T1824+"となるでしょう"
 	if _, err := bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(message)).Do(); err != nil {
 		log.Fatalf("Coundnot posting weather:%v",err)
-	}
+	}*/
 	/*resp:=linebot.NewTemplateMessage(
 		"weather",
 		linebot.NewButtonsTemplate(
