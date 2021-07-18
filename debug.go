@@ -31,7 +31,7 @@ func debugFlex(bot *linebot.Client, event *linebot.Event)  {
 		},
 		Hero:      &linebot.ImageComponent{
 			Type:            linebot.FlexComponentTypeImage,
-			URL:             data.Forecasts[0].Image.URL,
+			URL:             data.Forecasts[1].Image.URL,
 			Size:            linebot.FlexImageSizeTypeXxl,
 			AspectRatio:     linebot.FlexImageAspectRatioType1to1,
 			AspectMode:      linebot.FlexImageAspectModeTypeFit,
@@ -47,7 +47,7 @@ func debugFlex(bot *linebot.Client, event *linebot.Event)  {
 					Contents:   []*linebot.SpanComponent{
 						{
 							Type:       linebot.FlexComponentTypeSpan,
-							Text:       "最高気温 : " + data.Forecasts[0].Temperature.Max.Celsius + "℃",
+							Text:       "最高気温 : " + data.Forecasts[1].Temperature.Max.Celsius + "℃",
 							Size:       linebot.FlexTextSizeTypeXxl,
 							Weight:     linebot.FlexTextWeightTypeBold,
 							Color:      "#fc0703",
@@ -55,7 +55,7 @@ func debugFlex(bot *linebot.Client, event *linebot.Event)  {
 						},
 						{
 							Type:       linebot.FlexComponentTypeSpan,
-							Text:       "最低気温 : " + data.Forecasts[0].Temperature.Min.Celsius + "℃",
+							Text:       "最低気温 : " + data.Forecasts[1].Temperature.Min.Celsius + "℃",
 							Size:       linebot.FlexTextSizeTypeSm,
 							Color:      "#03befc",
 						},
