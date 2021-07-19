@@ -102,7 +102,7 @@ func SendWeather(bot *linebot.Client, event *linebot.Event,code string) {
 			BorderColor:     "#5cd8f7",
 			//Action:          nil,
 		},
-		Footer:    &linebot.BoxComponent{
+		/*Footer:    &linebot.BoxComponent{
 			Type:            linebot.FlexComponentTypeBox,
 			Layout:          linebot.FlexBoxLayoutTypeBaseline,
 			Contents:        []linebot.FlexComponent{
@@ -117,7 +117,7 @@ func SendWeather(bot *linebot.Client, event *linebot.Event,code string) {
 			//BackgroundColor: "",
 			BorderColor:     "#5cf7ac",
 			//Action:          nil,
-		},
+		},*/
 		/*Styles:    &linebot.BubbleStyle{
 			Header: &linebot.BlockStyle{
 				Separator:      true,
@@ -138,7 +138,7 @@ func SendWeather(bot *linebot.Client, event *linebot.Event,code string) {
 		}*/
 	})
 	if _,err:=bot.ReplyMessage(event.ReplyToken,resp).Do();err != nil {
-		log.Fatalf("debug.go error :%v",err)
+		log.Fatalf("weather response error :%v",err)
 	}
 	/*message:=data.Title+"\n"+data.PublicTimeFormatted + data.Description.Text +"\n今日は"+data.Forecasts[0].Telop+"です\nまた、最高気温が"+data.Forecasts[0].Temperature.Max.Celsius+"\n最低気温が"+data.Forecasts[0].Temperature.Min.Celsius+"です\n0 時から 6 時までの降水確率は"+data.Forecasts[0].ChanceOfRain.T0006+"\n"+"6 時から 12 時までの降水確率"+data.Forecasts[0].ChanceOfRain.T0612+"\n"+"12 時から 18 時までの降水確率"+data.Forecasts[0].ChanceOfRain.T1218+"\n"+"18 時から 24 時までの降水確率は"+data.Forecasts[0].ChanceOfRain.T1824+"となるでしょう"
 	if _, err := bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(message)).Do(); err != nil {
