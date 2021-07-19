@@ -104,6 +104,15 @@ func lineHandler(c echo.Context) error {
 				}
 
 			}
+			if message.Text=="quickemojisender" {
+				quickRepEmojiSender(bot,event)
+			}
+			if message.Text=="quickemoji" {
+				quickRepEmoji(bot,event)
+			}
+			if message.Text == "quick" {
+				quickRep(bot,event)
+			}
 
 			if strings.Contains(message.Text, "weather") {
 				msg:=message.Text
@@ -117,6 +126,122 @@ func lineHandler(c echo.Context) error {
 			}
 		}
 	}
-	return c.String(http.StatusOK,"OK")
+	query:=c.QueryParam("item")
+	return c.String(http.StatusOK,query)
+	//return c.String(http.StatusOK,"OK")
 
+}
+
+func quickRepEmojiSender(bot *linebot.Client, event *linebot.Event) {
+
+	resp:=linebot.NewQuickReplyItems(
+		&linebot.QuickReplyButton{
+			ImageURL: "https://www.jma.go.jp/jma/kishou/img/logo2.jpg",
+			Action:   linebot.NewMessageAction("天気", "weather 140010"),
+		},
+		&linebot.QuickReplyButton{
+			ImageURL: "https://cdn.icon-icons.com/icons2/729/PNG/512/twitter_icon-icons.com_62751.png",
+			Action:   linebot.NewDatetimePickerAction("time","&item=1111","date","00:00","23:59","00:00"),
+		},
+		&linebot.QuickReplyButton{
+			ImageURL: "https://upload.wikimedia.org/wikipedia/commons/3/39/%E3%81%BD-red.png",
+			Action:   linebot.NewPostbackAction("label","&item=1112","text","displayText"),
+		},
+		&linebot.QuickReplyButton{
+			ImageURL: "https://img.icons8.com/material/452/camera--v1.png",
+			Action:   linebot.NewCameraAction("camera"),
+		},
+		&linebot.QuickReplyButton{
+			ImageURL: "https://icooon-mono.com/i/icon_16245/icon_162450_256.png",
+			Action:   linebot.NewCameraRollAction("CameraRoll"),
+		},
+		&linebot.QuickReplyButton{
+			ImageURL: "https://icooon-mono.com/i/icon_15694/icon_156940_256.png",
+			Action:   linebot.NewLocationAction("Location"),
+		},
+	)
+	re:=linebot.NewTextMessage("help").AddEmoji(&linebot.Emoji{
+		Index:     5,
+		Length:    10,
+		ProductID: "5ac2213e040ab15980c9b447",
+		EmojiID:   "005",
+	}).WithQuickReplies(resp).WithSender(&linebot.Sender{
+		Name:    "aaa",
+		IconURL: "https://icooon-mono.com/i/icon_15694/icon_156940_256.png",
+	})
+	if _, err := bot.ReplyMessage(event.ReplyToken,re).Do(); err != nil {
+		log.Fatalf("QuickError:%v",err)
+	}
+}
+func quickRepEmoji(bot *linebot.Client, event *linebot.Event) {
+
+	resp:=linebot.NewQuickReplyItems(
+		&linebot.QuickReplyButton{
+			ImageURL: "https://www.jma.go.jp/jma/kishou/img/logo2.jpg",
+			Action:   linebot.NewMessageAction("天気", "weather 140010"),
+		},
+		&linebot.QuickReplyButton{
+			ImageURL: "https://cdn.icon-icons.com/icons2/729/PNG/512/twitter_icon-icons.com_62751.png",
+			Action:   linebot.NewDatetimePickerAction("time","&item=1111","date","00:00","23:59","00:00"),
+		},
+		&linebot.QuickReplyButton{
+			ImageURL: "https://upload.wikimedia.org/wikipedia/commons/3/39/%E3%81%BD-red.png",
+			Action:   linebot.NewPostbackAction("label","&item=1112","text","displayText"),
+		},
+		&linebot.QuickReplyButton{
+			ImageURL: "https://img.icons8.com/material/452/camera--v1.png",
+			Action:   linebot.NewCameraAction("camera"),
+		},
+		&linebot.QuickReplyButton{
+			ImageURL: "https://icooon-mono.com/i/icon_16245/icon_162450_256.png",
+			Action:   linebot.NewCameraRollAction("CameraRoll"),
+		},
+		&linebot.QuickReplyButton{
+			ImageURL: "https://icooon-mono.com/i/icon_15694/icon_156940_256.png",
+			Action:   linebot.NewLocationAction("Location"),
+		},
+	)
+	re:=linebot.NewTextMessage("helper").AddEmoji(&linebot.Emoji{
+		Index:     5,
+		Length:    10,
+		ProductID: "5ac2213e040ab15980c9b447",
+		EmojiID:   "005",
+	}).WithQuickReplies(resp)
+	if _, err := bot.ReplyMessage(event.ReplyToken,re).Do(); err != nil {
+		log.Fatalf("QuickError:%v",err)
+	}
+}
+
+func quickRep(bot *linebot.Client, event *linebot.Event) {
+
+	resp:=linebot.NewQuickReplyItems(
+		&linebot.QuickReplyButton{
+			ImageURL: "https://www.jma.go.jp/jma/kishou/img/logo2.jpg",
+			Action:   linebot.NewMessageAction("天気", "weather 140010"),
+		},
+		&linebot.QuickReplyButton{
+			ImageURL: "https://cdn.icon-icons.com/icons2/729/PNG/512/twitter_icon-icons.com_62751.png",
+			Action:   linebot.NewDatetimePickerAction("time","&item=1111","date","00:00","23:59","00:00"),
+		},
+		&linebot.QuickReplyButton{
+			ImageURL: "https://upload.wikimedia.org/wikipedia/commons/3/39/%E3%81%BD-red.png",
+			Action:   linebot.NewPostbackAction("label","&item=1112","text","displayText"),
+		},
+		&linebot.QuickReplyButton{
+			ImageURL: "https://img.icons8.com/material/452/camera--v1.png",
+			Action:   linebot.NewCameraAction("camera"),
+		},
+		&linebot.QuickReplyButton{
+			ImageURL: "https://icooon-mono.com/i/icon_16245/icon_162450_256.png",
+			Action:   linebot.NewCameraRollAction("CameraRoll"),
+		},
+		&linebot.QuickReplyButton{
+			ImageURL: "https://icooon-mono.com/i/icon_15694/icon_156940_256.png",
+			Action:   linebot.NewLocationAction("Location"),
+		},
+	)
+	re:=linebot.NewTextMessage("helperer").WithQuickReplies(resp)
+	if _, err := bot.ReplyMessage(event.ReplyToken,re).Do(); err != nil {
+		log.Fatalf("QuickError:%v",err)
+	}
 }
