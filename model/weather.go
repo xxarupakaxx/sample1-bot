@@ -30,6 +30,7 @@ func GetWeather(code string) *domain.Weather{
 }
 func SendWeather(bot *linebot.Client, event *linebot.Event,code string) {
 	data:=GetWeather(code)
+	description:=strings.NewReplacer("\n","").Replace(data.Description.Text)
 	resp:=linebot.NewFlexMessage(
 		"Weather Information",
 		&linebot.CarouselContainer{
@@ -88,7 +89,7 @@ func SendWeather(bot *linebot.Client, event *linebot.Event,code string) {
 							},
 							&linebot.TextComponent{
 								Type:       linebot.FlexComponentTypeText,
-								Text:       data.Description.Text,
+								Text:       description,
 								//Contents:   nil,
 								Flex:       linebot.IntPtr(3),
 								Size:       linebot.FlexTextSizeTypeSm,
@@ -194,7 +195,7 @@ func SendWeather(bot *linebot.Client, event *linebot.Event,code string) {
 							},
 							&linebot.TextComponent{
 								Type:       linebot.FlexComponentTypeText,
-								Text:       data.Description.Text,
+								Text:       description,
 								//Contents:   nil,
 								Flex:       linebot.IntPtr(3),
 								Size:       linebot.FlexTextSizeTypeSm,
@@ -300,14 +301,14 @@ func SendWeather(bot *linebot.Client, event *linebot.Event,code string) {
 							},
 							&linebot.TextComponent{
 								Type:       linebot.FlexComponentTypeText,
-								Text:       data.Description.Text,
+								Text:       description,
 								//Contents:   nil,
 								Flex:       linebot.IntPtr(6),
 								Size:       linebot.FlexTextSizeTypeSm,
 								Wrap:       true,
 								//Color:      "",
 								//Action:     nil,
-								MaxLines:   linebot.IntPtr(5),
+								MaxLines:   linebot.IntPtr(12),
 							},
 						},
 						BorderColor:     "#5cd8f7",
