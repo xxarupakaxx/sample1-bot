@@ -55,7 +55,7 @@ func SendWeather(bot *linebot.Client, event *linebot.Event,code string) {
 		},
 		Hero:      &linebot.ImageComponent{
 			Type:            linebot.FlexComponentTypeImage,
-			URL:             ConvertTelop(data.Forecasts[0].Telop),
+			URL:             "",
 			Size:            linebot.FlexImageSizeTypeXxl,
 			AspectRatio:     linebot.FlexImageAspectRatioType1to1,
 			AspectMode:      linebot.FlexImageAspectModeTypeFit,
@@ -85,7 +85,7 @@ func SendWeather(bot *linebot.Client, event *linebot.Event,code string) {
 				},
 				&linebot.TextComponent{
 					Type:       linebot.FlexComponentTypeText,
-					Text:       data.Description.HeadlineText,
+					Text:       data.Description.Text,
 					//Contents:   nil,
 					Flex:       linebot.IntPtr(3),
 					Size:       linebot.FlexTextSizeTypeSm,
