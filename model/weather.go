@@ -302,7 +302,7 @@ func SendWeather(bot *linebot.Client, event *linebot.Event,code string) {
 								Type:       linebot.FlexComponentTypeText,
 								Text:       data.Description.Text,
 								//Contents:   nil,
-								Flex:       linebot.IntPtr(3),
+								Flex:       linebot.IntPtr(6),
 								Size:       linebot.FlexTextSizeTypeSm,
 								Wrap:       true,
 								//Color:      "",
