@@ -145,7 +145,7 @@ func quickRepEmojiSender(bot *linebot.Client, event *linebot.Event) {
 		},
 		&linebot.QuickReplyButton{
 			ImageURL: "https://upload.wikimedia.org/wikipedia/commons/3/39/%E3%81%BD-red.png",
-			Action:   linebot.NewPostbackAction("label","&item=1112","text","displayText"),
+			Action:   linebot.NewPostbackAction("label","&item=1112","","displayText"),
 		},
 		&linebot.QuickReplyButton{
 			ImageURL: "https://img.icons8.com/material/452/camera--v1.png",
@@ -186,7 +186,7 @@ func quickRepEmoji(bot *linebot.Client, event *linebot.Event) {
 		},
 		&linebot.QuickReplyButton{
 			ImageURL: "https://upload.wikimedia.org/wikipedia/commons/3/39/%E3%81%BD-red.png",
-			Action:   linebot.NewPostbackAction("label","&item=1112","text","displayText"),
+			Action:   linebot.NewPostbackAction("label","&item=1112","","displayText"),
 		},
 		&linebot.QuickReplyButton{
 			ImageURL: "https://img.icons8.com/material/452/camera--v1.png",
