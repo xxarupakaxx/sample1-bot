@@ -109,7 +109,7 @@ func SendWeather(bot *linebot.Client, event *linebot.Event,code string) {
 			Contents:        []linebot.FlexComponent{
 				&linebot.ButtonComponent{
 					Type:    linebot.FlexComponentTypeButton,
-					Action:  linebot.NewURIAction("Weather URL", data.Link),
+					Action:  linebot.NewURIAction("Weather URL", "https://www.jma.go.jp/bosai/forecast/#area_type=offices&area_code=140000"),
 					Style:   linebot.FlexButtonStyleTypeLink,
 					Color:   "#5cf7ac",
 				},
