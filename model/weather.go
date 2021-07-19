@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"strings"
 )
 
 func GetWeather(code string) *domain.Weather{
@@ -85,10 +86,10 @@ func SendWeather(bot *linebot.Client, event *linebot.Event,code string) {
 				},
 				&linebot.TextComponent{
 					Type:       linebot.FlexComponentTypeText,
-					Text:       data.Description.Text,
+					Text:       data.Description.HeadlineText,
 					//Contents:   nil,
 					Flex:       linebot.IntPtr(3),
-					Size:       linebot.FlexTextSizeTypeLg,
+					Size:       linebot.FlexTextSizeTypeSm,
 					Wrap:       true,
 					//Color:      "",
 					//Action:     nil,
@@ -108,7 +109,7 @@ func SendWeather(bot *linebot.Client, event *linebot.Event,code string) {
 					Align:  linebot.FlexComponentAlignTypeCenter,
 					Wrap:   true,
 					Color:  "#2196F3",
-					Action: linebot.NewURIAction("天気予報", data.Link),
+					Action: linebot.NewURIAction("天気予報", ConvertTelop(data.Forecasts[0].Telop)),
 					Style:  linebot.FlexTextStyleTypeItalic,
 					Weight: linebot.FlexTextWeightTypeBold,
 
@@ -143,4 +144,25 @@ func SendWeather(bot *linebot.Client, event *linebot.Event,code string) {
 		log.Fatalf("weather response error :%v",err)
 	}
 
+}
+func ConvertTelop(telop string) string {
+	if strings.Contains(telop,"晴れ") && strings.Contains(telop,"曇") {
+		return "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQo2GqJ-kmQi-OOw2O5YgHIT9ATmffsvMA0Rpjh7TbYy-7nqB7NZHEGgH2zisO3l6IQC7A&usqp=CAU"
+	}
+	if strings.Contains(telop, "晴れ") {
+		return "https://illust8.com/wp-content/uploads/2018/08/weather_sun_solar_illust_1080.png"
+	}
+	if strings.Contains(telop, "曇") {
+		return "https://www.jalan.net/jalan/images/pictLL/Y5/L336655/L3366550005036729.jpg"
+	}
+	if strings.Contains(telop, "雨") {
+		return "https://frame-illust.com/fi/wp-content/uploads/2016/05/7749.png"
+	}
+	if strings.Contains(telop, "雨") && strings.Contains(telop, "曇") {
+		return "https://marinchu.com/wp/wp-content/uploads/kumori-300x300.png"
+	}
+	if strings.Contains(telop, "雨") || strings.Contains(telop, "晴れ") {
+		return "https://lh3.googleusercontent.com/proxy/TKLgewsO3vnHPkGeTRCiKtoz3Jj0IU-rito3tV39LL3JalhdrwuQ34xSBM-xLxUF9m3brN4hg2nyCVPqBbUUga3tupgtQig"
+	}
+	return "https://pbs.twimg.com/profile_images/1414880257631416321/s0pDGoih_400x400.jpg"
 }

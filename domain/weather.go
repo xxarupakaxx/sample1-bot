@@ -11,6 +11,7 @@ type Weather struct {
 }
 type Description struct {
 	Text                string    `json:"text"`
+	HeadlineText        string    `json:"headlineText"`
 }
 type Forecasts struct {
 	Date      string `json:"date"`
