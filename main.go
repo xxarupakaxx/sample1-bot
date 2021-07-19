@@ -141,7 +141,7 @@ func quickRepEmojiSender(bot *linebot.Client, event *linebot.Event) {
 		},
 		&linebot.QuickReplyButton{
 			ImageURL: "https://cdn.icon-icons.com/icons2/729/PNG/512/twitter_icon-icons.com_62751.png",
-			Action:   linebot.NewDatetimePickerAction("time","&item=1111","date","00:00","23:59","00:00"),
+			Action:   linebot.NewDatetimePickerAction("time","&item=1111","time","00:00","23:59","00:00"),
 		},
 		&linebot.QuickReplyButton{
 			ImageURL: "https://upload.wikimedia.org/wikipedia/commons/3/39/%E3%81%BD-red.png",
@@ -182,7 +182,7 @@ func quickRepEmoji(bot *linebot.Client, event *linebot.Event) {
 		},
 		&linebot.QuickReplyButton{
 			ImageURL: "https://cdn.icon-icons.com/icons2/729/PNG/512/twitter_icon-icons.com_62751.png",
-			Action:   linebot.NewDatetimePickerAction("time","&item=1111","date","00:00","23:59","00:00"),
+			Action:   linebot.NewDatetimePickerAction("time","&item=1111","time","00:00","23:59","00:00"),
 		},
 		&linebot.QuickReplyButton{
 			ImageURL: "https://upload.wikimedia.org/wikipedia/commons/3/39/%E3%81%BD-red.png",
@@ -221,11 +221,11 @@ func quickRep(bot *linebot.Client, event *linebot.Event) {
 		},
 		&linebot.QuickReplyButton{
 			ImageURL: "https://cdn.icon-icons.com/icons2/729/PNG/512/twitter_icon-icons.com_62751.png",
-			Action:   linebot.NewDatetimePickerAction("time","&item=1111","date","00:00","23:59","00:00"),
+			Action:   linebot.NewDatetimePickerAction("time","&item=1111","time","00:00","23:59","00:00"),
 		},
 		&linebot.QuickReplyButton{
 			ImageURL: "https://upload.wikimedia.org/wikipedia/commons/3/39/%E3%81%BD-red.png",
-			Action:   linebot.NewPostbackAction("label","&item=1112","text","displayText"),
+			Action:   linebot.NewPostbackAction("label","&item=1112","","displayText"),
 		},
 		&linebot.QuickReplyButton{
 			ImageURL: "https://img.icons8.com/material/452/camera--v1.png",
