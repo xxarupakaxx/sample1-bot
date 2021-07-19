@@ -179,7 +179,7 @@ func debug(bot *linebot.Client, event *linebot.Event) {
 					Type:       linebot.FlexComponentTypeText,
 					Text:       "ワクチンの情報を詳しく知るのは重要なことだけれどもワクチンを怖がりすぎたら注射のストレスで病気になるそれが副反応とか言われちゃあおしまいだよね打ちたい打ちたい、わくわく！\nで打ちに行かなきゃ。ワクワク！、ね。ワクチンワクワク！、ね。ヨコハマヨーヨーね。うん。",
 					//Contents:   nil,
-					Flex:       linebot.IntPtr(3),
+					Flex:       linebot.IntPtr(6),
 					Size:       linebot.FlexTextSizeTypeSm,
 					Wrap:       true,
 					//Color:      "",
@@ -232,6 +232,7 @@ func debug(bot *linebot.Client, event *linebot.Event) {
 			Footer: &linebot.BlockStyle{
 				Separator:      true,
 				SeparatorColor: "#2196F3",
+				BackgroundColor: "#00E5FF",
 			},
 		},
 	})
