@@ -118,7 +118,7 @@ func SendWeather(bot *linebot.Client, event *linebot.Event,code string) {
 			BorderColor:     "#5cf7ac",
 			//Action:          nil,
 		},
-		Styles:    &linebot.BubbleStyle{
+		/*Styles:    &linebot.BubbleStyle{
 			Header: &linebot.BlockStyle{
 				Separator:      true,
 
@@ -135,7 +135,7 @@ func SendWeather(bot *linebot.Client, event *linebot.Event,code string) {
 				Separator:      false,
 
 			},
-		},
+		}*/
 	})
 	if _,err:=bot.ReplyMessage(event.ReplyToken,resp).Do();err != nil {
 		log.Fatalf("debug.go error :%v",err)
@@ -161,7 +161,7 @@ func SendWeather(bot *linebot.Client, event *linebot.Event,code string) {
 			),
 		)
 	if _,err:=bot.ReplyMessage(event.ReplyToken,resp).Do();err!=nil{
-		log.Fatalf("coundnot sending resp:%v",err)
+		log.Fatalf("couldnot sending resp:%v",err)
 	}*/
 
 }
