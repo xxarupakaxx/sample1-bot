@@ -256,7 +256,7 @@ func SendWeather(bot *linebot.Client, event *linebot.Event,code string) {
 						Contents:        []linebot.FlexComponent{
 							&linebot.TextComponent{
 								Type:       linebot.FlexComponentTypeText,
-								Text:       "今日の天気",
+								Text:       "明後日の天気",
 								Size:       linebot.FlexTextSizeTypeLg,
 								Align:      linebot.FlexComponentAlignTypeCenter,
 								Weight:     linebot.FlexTextWeightTypeBold,
@@ -362,10 +362,10 @@ func SendWeather(bot *linebot.Client, event *linebot.Event,code string) {
 
 }
 func ConvertTelop(telop string) string {
-	if strings.Contains(telop,"晴れ") && strings.Contains(telop,"曇") {
+	if strings.Contains(telop,"晴") && strings.Contains(telop,"曇") {
 		return "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQo2GqJ-kmQi-OOw2O5YgHIT9ATmffsvMA0Rpjh7TbYy-7nqB7NZHEGgH2zisO3l6IQC7A&usqp=CAU"
 	}
-	if strings.Contains(telop, "晴れ") {
+	if strings.Contains(telop, "晴") {
 		return "https://illust8.com/wp-content/uploads/2018/08/weather_sun_solar_illust_1080.png"
 	}
 	if strings.Contains(telop, "曇") {
@@ -377,7 +377,7 @@ func ConvertTelop(telop string) string {
 	if strings.Contains(telop, "雨") && strings.Contains(telop, "曇") {
 		return "https://marinchu.com/wp/wp-content/uploads/kumori-300x300.png"
 	}
-	if strings.Contains(telop, "雨") || strings.Contains(telop, "晴れ") {
+	if strings.Contains(telop, "雨") || strings.Contains(telop, "晴") {
 		return "https://lh3.googleusercontent.com/proxy/TKLgewsO3vnHPkGeTRCiKtoz3Jj0IU-rito3tV39LL3JalhdrwuQ34xSBM-xLxUF9m3brN4hg2nyCVPqBbUUga3tupgtQig"
 	}
 	return "https://pbs.twimg.com/profile_images/1414880257631416321/s0pDGoih_400x400.jpg"
