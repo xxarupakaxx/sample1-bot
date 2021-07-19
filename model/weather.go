@@ -61,7 +61,7 @@ func SendWeather(bot *linebot.Client, event *linebot.Event,code string) {
 		},
 		Body:      &linebot.BoxComponent{
 			Type:            linebot.FlexComponentTypeBox,
-			Layout:          linebot.FlexBoxLayoutTypeVertical,
+			Layout:          linebot.FlexBoxLayoutTypeBaseline,
 			Contents:        []linebot.FlexComponent{
 				&linebot.TextComponent{
 					Type: linebot.FlexComponentTypeText,
@@ -82,7 +82,7 @@ func SendWeather(bot *linebot.Client, event *linebot.Event,code string) {
 							Color:      "#03befc",
 						},
 					},
-					Flex:       linebot.IntPtr(2),
+					//Flex:       linebot.IntPtr(2),
 					Size:       linebot.FlexTextSizeTypeSm,
 					Wrap:       false,
 					//Action:     nil,
@@ -92,7 +92,7 @@ func SendWeather(bot *linebot.Client, event *linebot.Event,code string) {
 					Type:       linebot.FlexComponentTypeText,
 					Text:       data.Description.Text,
 					//Contents:   nil,
-					Flex:       linebot.IntPtr(3),
+					//Flex:       linebot.IntPtr(3),
 					Size:       linebot.FlexTextSizeTypeSm,
 					Wrap:       false,
 					//Color:      "",
