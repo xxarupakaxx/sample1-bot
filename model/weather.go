@@ -103,7 +103,7 @@ func SendWeather(bot *linebot.Client, event *linebot.Event,code string) {
 			BorderColor:     "#5cd8f7",
 			//Action:          nil,
 		},
-		Footer:    &linebot.BoxComponent{
+		/*Footer:    &linebot.BoxComponent{
 			Type:            linebot.FlexComponentTypeBox,
 			Layout:          linebot.FlexBoxLayoutTypeBaseline,
 			Contents:        []linebot.FlexComponent{
@@ -118,7 +118,7 @@ func SendWeather(bot *linebot.Client, event *linebot.Event,code string) {
 			//BackgroundColor: "",
 			BorderColor:     "#5cf7ac",
 			//Action:          nil,
-		},
+		},*/
 		/*Styles:    &linebot.BubbleStyle{
 			Header: &linebot.BlockStyle{
 				Separator:      true,
