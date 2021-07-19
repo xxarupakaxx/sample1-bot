@@ -30,7 +30,6 @@ func GetWeather(code string) *domain.Weather{
 }
 func SendWeather(bot *linebot.Client, event *linebot.Event,code string) {
 	data:=GetWeather(code)
-	log.Println("\n",data,"\n")
 	resp:=linebot.NewFlexMessage(
 		"Weather Information",
 		&linebot.BubbleContainer{
@@ -98,7 +97,43 @@ func SendWeather(bot *linebot.Client, event *linebot.Event,code string) {
 			},
 			BorderColor:     "#5cd8f7",
 			//Action:          nil,
-		},
+		},/*&linebot.BoxComponent{
+			Type:            linebot.FlexComponentTypeBox,
+			Layout:          linebot.FlexBoxLayoutTypeVertical,
+			Contents:        []linebot.FlexComponent{
+				&linebot.TextComponent{
+					Type: linebot.FlexComponentTypeText,
+					Text: "最高気温 : " + data.Forecasts[0].Temperature.Max.Celsius + "℃\n",
+					Flex:       linebot.IntPtr(1),
+					Size:       linebot.FlexTextSizeTypeXl,
+					Wrap:       true,
+					//Action:     nil,
+					MaxLines:   linebot.IntPtr(2),
+				},
+				&linebot.TextComponent{
+					Type: linebot.FlexComponentTypeText,
+					Text: "最低気温 : " + data.Forecasts[0].Temperature.Min.Celsius + "℃\n",
+					Flex:       linebot.IntPtr(1),
+					Size:       linebot.FlexTextSizeTypeXl,
+					Wrap:       true,
+					//Action:     nil,
+					MaxLines:   linebot.IntPtr(2),
+				},
+				&linebot.TextComponent{
+					Type:       linebot.FlexComponentTypeText,
+					Text:       data.Description.HeadlineText,
+					//Contents:   nil,
+					Flex:       linebot.IntPtr(3),
+					Size:       linebot.FlexTextSizeTypeSm,
+					Wrap:       true,
+					//Color:      "",
+					//Action:     nil,
+					MaxLines:   linebot.IntPtr(5),
+				},
+			},
+			BorderColor:     "#5cd8f7",
+			//Action:          nil,
+		},*/
 		Footer: &linebot.BoxComponent{
 			Type:            linebot.FlexComponentTypeBox,
 			Layout:          linebot.FlexBoxLayoutTypeBaseline,
