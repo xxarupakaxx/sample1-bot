@@ -56,7 +56,7 @@ func SendWeather(bot *linebot.Client, event *linebot.Event,code string) {
 		},
 		Hero:      &linebot.ImageComponent{
 			Type:            linebot.FlexComponentTypeImage,
-			URL:             data.Forecasts[0].Image.URL,
+			URL:             ConvertTelop(data.Forecasts[0].Telop),
 			Size:            linebot.FlexImageSizeTypeXxl,
 			AspectRatio:     linebot.FlexImageAspectRatioType1to1,
 			AspectMode:      linebot.FlexImageAspectModeTypeFit,
@@ -109,7 +109,7 @@ func SendWeather(bot *linebot.Client, event *linebot.Event,code string) {
 					Align:  linebot.FlexComponentAlignTypeCenter,
 					Wrap:   true,
 					Color:  "#2196F3",
-					Action: linebot.NewURIAction("天気予報", ConvertTelop(data.Forecasts[0].Telop)),
+					Action: linebot.NewURIAction("天気予報",data.Link),
 					Style:  linebot.FlexTextStyleTypeItalic,
 					Weight: linebot.FlexTextWeightTypeBold,
 
