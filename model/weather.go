@@ -30,7 +30,9 @@ func GetWeather(code string) *domain.Weather{
 func SendWeather(bot *linebot.Client, event *linebot.Event,code string) {
 	data:=GetWeather(code)
 	log.Println("\n",data,"\n")
-	resp:=linebot.NewFlexMessage("Weather Information",&linebot.BubbleContainer{
+	resp:=linebot.NewFlexMessage(
+		"Weather Information",
+		&linebot.BubbleContainer{
 		Type:      linebot.FlexContainerTypeBubble,
 		Direction: linebot.FlexBubbleDirectionTypeLTR,
 		Header:    &linebot.BoxComponent{
@@ -100,13 +102,16 @@ func SendWeather(bot *linebot.Client, event *linebot.Event,code string) {
 			Type:            linebot.FlexComponentTypeBox,
 			Layout:          linebot.FlexBoxLayoutTypeBaseline,
 			Contents:        []linebot.FlexComponent{
-				&linebot.ButtonComponent{
-					Type:    linebot.FlexComponentTypeButton,
-					Action:  linebot.NewURIAction("天気予報", data.Link),
-					Style:   linebot.FlexButtonStyleTypeLink,
-					Color:   "#80DEEA",
+				&linebot.TextComponent{
+					Type:   linebot.FlexComponentTypeText,
+					Text:   "天気予報",
+					Wrap:   true,
+					Color:  "#2196F3",
+					Action: linebot.NewURIAction("天気予報",data.Link),
+					Style:  linebot.FlexTextStyleTypeItalic,
 				},
 			},
+			Action: linebot.NewURIAction("天気予報",data.Link),
 			BorderColor:     "#90CAF9",
 		},
 
@@ -129,7 +134,8 @@ func SendWeather(bot *linebot.Client, event *linebot.Event,code string) {
 				SeparatorColor: "#2196F3",
 			},
 		},
-	})
+	},
+	)
 	if _,err:=bot.ReplyMessage(event.ReplyToken,resp).Do();err != nil {
 		log.Fatalf("weather response error :%v",err)
 	}
