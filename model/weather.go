@@ -61,7 +61,7 @@ func SendWeather(bot *linebot.Client, event *linebot.Event,code string) {
 		},
 		Body:      &linebot.BoxComponent{
 			Type:            linebot.FlexComponentTypeBox,
-			Layout:          linebot.FlexBoxLayoutTypeBaseline,
+			Layout:          linebot.FlexBoxLayoutTypeHorizontal,
 			Contents:        []linebot.FlexComponent{
 				&linebot.TextComponent{
 					Type: linebot.FlexComponentTypeText,
@@ -82,7 +82,7 @@ func SendWeather(bot *linebot.Client, event *linebot.Event,code string) {
 							Color:      "#03befc",
 						},
 					},
-					//Flex:       linebot.IntPtr(2),
+					Flex:       linebot.IntPtr(2),
 					Size:       linebot.FlexTextSizeTypeSm,
 					Wrap:       false,
 					//Action:     nil,
@@ -92,7 +92,7 @@ func SendWeather(bot *linebot.Client, event *linebot.Event,code string) {
 					Type:       linebot.FlexComponentTypeText,
 					Text:       data.Description.Text,
 					//Contents:   nil,
-					//Flex:       linebot.IntPtr(3),
+					Flex:       linebot.IntPtr(3),
 					Size:       linebot.FlexTextSizeTypeSm,
 					Wrap:       false,
 					//Color:      "",
@@ -101,11 +101,9 @@ func SendWeather(bot *linebot.Client, event *linebot.Event,code string) {
 				},
 			},
 			BorderColor:     "#5cd8f7",
-			Width: "200px",
-			Height: "200px",
 			//Action:          nil,
 		},
-		/*Footer:    &linebot.BoxComponent{
+		Footer:    &linebot.BoxComponent{
 			Type:            linebot.FlexComponentTypeBox,
 			Layout:          linebot.FlexBoxLayoutTypeBaseline,
 			Contents:        []linebot.FlexComponent{
@@ -120,7 +118,7 @@ func SendWeather(bot *linebot.Client, event *linebot.Event,code string) {
 			//BackgroundColor: "",
 			BorderColor:     "#5cf7ac",
 			//Action:          nil,
-		},*/
+		},
 		/*Styles:    &linebot.BubbleStyle{
 			Header: &linebot.BlockStyle{
 				Separator:      true,
