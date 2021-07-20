@@ -1,6 +1,7 @@
 package model
 
 import (
+	"database/sql"
 	"encoding/json"
 	"fmt"
 	"github.com/line/line-bot-sdk-go/linebot"
@@ -28,8 +29,18 @@ func GetWeather(code string) *domain.Weather{
 	}
 	return data
 }
-func SendWeather(bot *linebot.Client, event *linebot.Event,code string) {
+func SendWeather(bot *linebot.Client, event *linebot.Event,code string,db *sql.DB) {
 	data:=GetWeather(code)
+	result :=0
+	if  r:=db.QueryRow("SELECT exists(SELECT code from city where code=$1)",code).Scan(&result);r!=nil{
+		log.Fatalf("Couldnot queryRow : %v",r)
+	}
+	if result==0 {
+		if _, err := bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage("存在しない都市名です")).Do(); err != nil {
+			log.Fatalf("Could Not sending :%v",err)
+		}
+		return
+	}
 	description:=strings.NewReplacer("\n","").Replace(data.Description.Text)
 	resp:=linebot.NewFlexMessage(
 		"Weather Information",
@@ -382,4 +393,13 @@ func ConvertTelop(telop string) string {
 		return "https://lh3.googleusercontent.com/proxy/TKLgewsO3vnHPkGeTRCiKtoz3Jj0IU-rito3tV39LL3JalhdrwuQ34xSBM-xLxUF9m3brN4hg2nyCVPqBbUUga3tupgtQig"
 	}
 	return "https://pbs.twimg.com/profile_images/1414880257631416321/s0pDGoih_400x400.jpg"
+}
+
+func PrefCode(db *sql.DB,cityName string)domain.City {
+	var data domain.City
+	if err:=db.QueryRow("SELECT * FROM city WHERE city.cityName=$1",cityName).Scan(&data.CityName,&data.ID);err!=nil{
+		log.Fatalf("Couldnot queryRow:%v",err)
+	}
+	return data
+
 }
