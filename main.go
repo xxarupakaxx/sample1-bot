@@ -4,6 +4,7 @@ import (
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 	"github.com/line/line-bot-sdk-go/linebot"
+	"github.com/xxarupakaxx/sample1-bot/domain"
 	"github.com/xxarupakaxx/sample1-bot/model"
 	"log"
 	"net/http"
@@ -106,6 +107,19 @@ func lineHandler(c echo.Context) error {
 			}
 			if message.Text == "quick" {
 				quickRep(bot,event)
+			}
+			if message.Text == "db" {
+				db=model.DBConnect()
+				r,err:=db.Query("SELECT * from city where code=140010")
+				if err != nil {
+					log.Fatalf("errrrrrrrrrrr:%v",err)
+				}
+				var data domain.City
+				for r.Next() {
+					r.Scan(&data.CityName,&data.ID)
+				}
+				log.Println(data)
+
 			}
 			if strings.Contains(message.Text, "weather") {
 				msg:=message.Text
