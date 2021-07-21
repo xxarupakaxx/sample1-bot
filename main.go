@@ -112,8 +112,7 @@ func lineHandler(c echo.Context) error {
 					text+=s+" \n"
 				}
 				bot.ReplyMessage(event.ReplyToken,linebot.NewTextMessage(text)).Do()
-			}
-			if strings.Contains(message.Text, "weather") {
+			} else if strings.Contains(message.Text, "weather") {
 				msg:=message.Text
 				cityName:=msg[len("weather "):]
 				model.SendWeather(bot,event,cityName)
