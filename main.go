@@ -4,6 +4,7 @@ import (
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 	"github.com/line/line-bot-sdk-go/linebot"
+	"github.com/xxarupakaxx/sample1-bot/domain"
 	"github.com/xxarupakaxx/sample1-bot/model"
 	"log"
 	"net/http"
@@ -105,7 +106,13 @@ func lineHandler(c echo.Context) error {
 			if message.Text == "quick" {
 				quickRep(bot,event)
 			}
-
+			if strings.Contains(message.Text,"weather") && strings.Contains(message.Text,"一覧") {
+				text:="地域一覧"
+				for s, _ := range domain.CodeCity {
+					text+=s+" \n"
+				}
+				bot.ReplyMessage(event.ReplyToken,linebot.NewTextMessage(text)).Do()
+			}
 			if strings.Contains(message.Text, "weather") {
 				msg:=message.Text
 				cityName:=msg[len("weather "):]
