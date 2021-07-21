@@ -41,6 +41,10 @@ func SendWeather(bot *linebot.Client, event *linebot.Event,cityName string) {
 		return
 	}*/
 	description:=strings.NewReplacer("\n","").Replace(data.Description.Text)
+	var text string
+	for s, _ := range domain.CodeCity {
+		text+=s+"、"
+	}
 	resp:=linebot.NewFlexMessage(
 		"Weather Information",
 		&linebot.CarouselContainer{
@@ -361,6 +365,37 @@ func SendWeather(bot *linebot.Client, event *linebot.Event,cityName string) {
 						Footer: &linebot.BlockStyle{
 							Separator:      true,
 							SeparatorColor: "#2196F3",
+						},
+					},
+				},
+				{
+					Type:   linebot.FlexContainerTypeBubble,
+					Size:   linebot.FlexBubbleSizeTypeGiga,
+					Header: &linebot.BoxComponent{
+						Type:        linebot.FlexComponentTypeBox,
+						Contents:    []linebot.FlexComponent{
+							&linebot.TextComponent{
+								Type:  linebot.FlexComponentTypeText,
+								Text:  "天気の取得できる地域一覧",
+								Size:  linebot.FlexTextSizeTypeXxl,
+								Align: linebot.FlexComponentAlignTypeCenter,
+								Wrap:  true,
+								Color: "#6AB7FF",
+							},
+						},
+						BorderColor: "#6AB7FF",
+					},
+					Body:   &linebot.BoxComponent{
+						Type:     linebot.FlexComponentTypeBox,
+						Contents: []linebot.FlexComponent{
+							&linebot.TextComponent{
+								Type:     linebot.FlexComponentTypeText,
+								Text:     text,
+								Size:     linebot.FlexTextSizeTypeLg,
+								Wrap:     true,
+								Weight: linebot.FlexTextWeightTypeBold,
+								MaxLines: linebot.IntPtr(8),
+							},
 						},
 					},
 				},
