@@ -4,7 +4,6 @@ import (
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 	"github.com/line/line-bot-sdk-go/linebot"
-	"github.com/xxarupakaxx/sample1-bot/domain"
 	"github.com/xxarupakaxx/sample1-bot/model"
 	"log"
 	"net/http"
@@ -95,7 +94,7 @@ func lineHandler(c echo.Context) error {
 		case *linebot.LocationMessage:
 			model.SendRestoInfo(bot,event)
 		case *linebot.TextMessage:
-			messageSplit:=strings.Split(message.Text," ")
+			//messageSplit:=strings.Split(message.Text," ")
 			user,_:=bot.GetProfile(event.Source.UserID).Do()
 			if message.Text == "help" {
 				text:=user.DisplayName+"さん\n"+HELPMESSAGE
@@ -107,13 +106,10 @@ func lineHandler(c echo.Context) error {
 			if message.Text == "quick" {
 				quickRep(bot,event)
 			}
-			if ContainsElement(messageSplit, "weather") {
-				for city, _ := range domain.CodeCity {
-					if ContainsElement(messageSplit, city) {
-						model.SendWeather(bot,event,city)
-						return err
-					}
-				}
+			if strings.Contains(message.Text, "weather") {
+				msg:=message.Text
+				cityName:=msg[len("weather "):]
+				model.SendWeather(bot,event,cityName)
 			}
 
 		case *linebot.VideoMessage:
