@@ -404,7 +404,7 @@ func SendWeather(bot *linebot.Client, event *linebot.Event,cityName string) {
 							&linebot.TextComponent{
 								Type: linebot.FlexComponentTypeText,
 								Text: text,
-								Size:       linebot.FlexTextSizeType,
+								Size:       linebot.FlexTextSizeTypeSm,
 								Wrap:       true,
 								//Action:     nil,
 								MaxLines:   linebot.IntPtr(20),
