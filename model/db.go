@@ -2,8 +2,8 @@ package model
 
 import (
 	"database/sql"
+	"fmt"
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/joho/godotenv"
 	"log"
 	"os"
 )
@@ -11,7 +11,7 @@ import (
 var db *sql.DB
 func DBConnect() *sql.DB{
 
-	if os.Getenv("CLEARDB_DATABASE_URL") != "" {
+	/*if os.Getenv("CLEARDB_DATABASE_URL") != "" {
 		dbDriver:="mysql"
 		dbUser:=os.Getenv("DB_USERNAME")
 		dbPass:=os.Getenv("DB_PASSWORD")
@@ -28,13 +28,13 @@ func DBConnect() *sql.DB{
 			log.Println("fail")
 		}
 		db=_db
-	}else{
+	}*/
 		//local
-		godotenv.Load(".env")
+
 		dbDriver:="mysql"
-		dbUser:=os.Getenv("DB_USERNAME")
-		dbPass:=os.Getenv("DB_PASSWORD")
-		dbName:=os.Getenv("DB_NAME")
+		dbUser:=os.Getenv("DB_LOCALUSERNAME")
+		dbPass:=os.Getenv("DB_LOCALPASSWORD")
+		dbName:=os.Getenv("DB_LOCALNAME")
 		dbOption:="?parseTime=true&loc=Asia%2FTokyo"
 		dataSource:=dbUser+":"+dbPass+"@tcp(us-cdbr-east-04.cleardb.com:3306)/"+dbName+dbOption
 		_db,err:=sql.Open(dbDriver,dataSource)
@@ -47,6 +47,18 @@ func DBConnect() *sql.DB{
 			log.Println("fail")
 		}
 		db=_db
+	if err != nil {
+		log.Fatal(err)
 	}
+	db,err=sql.Open(dbDriver,os.Getenv("DB_LOCALUSERNAME")+":"+os.Getenv("DB_LOCALPASSWORD")+"@/"+os.Getenv("DB_LOCALNAME")+dbOption)
+	if err != nil {
+		log.Fatal(err)
+	}
+	if err = db.Ping(); err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("success")
+	return db
+
 	return db
 }
