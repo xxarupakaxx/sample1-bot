@@ -31,7 +31,7 @@ func GetWeather(code string) *domain.Weather{
 func SendWeather(bot *linebot.Client, event *linebot.Event,code string) {
 	data:=GetWeather(code)
 	result := 0
-	if  r:=db.QueryRow("SELECT exists(SELECT code from city where code=$1)",code).Scan(&result);r!=nil{
+	if  r:=db.QueryRow("SELECT exists(SELECT code from City where code=$1)",code).Scan(&result);r!=nil{
 		log.Fatalf("Couldnot queryRow : %v",r)
 	}
 	if result==0 {
@@ -396,7 +396,7 @@ func ConvertTelop(telop string) string {
 
 func PrefCode(cityName string)*domain.City {
 	var data *domain.City
-	if err:=db.QueryRow("SELECT * FROM city WHERE city.cityName=$1",cityName).Scan(&data.CityName,&data.ID);err!=nil{
+	if err:=db.QueryRow("SELECT * FROM City WHERE City.cityName=$1",cityName).Scan(&data.CityName,&data.ID);err!=nil{
 		log.Fatalf("Couldnot queryRow:%v",err)
 	}
 	return data

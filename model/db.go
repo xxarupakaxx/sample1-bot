@@ -28,7 +28,7 @@ func DBConnect() *sql.DB{
 			log.Println("fail")
 		}
 		db=_db
-	}else {
+	}else{
 		//local
 		godotenv.Load(".env")
 		dbDriver:="mysql"
