@@ -370,14 +370,15 @@ func SendWeather(bot *linebot.Client, event *linebot.Event,cityName string) {
 				},
 				{
 					Type:   linebot.FlexContainerTypeBubble,
-					Size:   linebot.FlexBubbleSizeTypeGiga,
+					Direction: linebot.FlexBubbleDirectionTypeLTR,
 					Header: &linebot.BoxComponent{
 						Type:        linebot.FlexComponentTypeBox,
+						Layout:          linebot.FlexBoxLayoutTypeBaseline,
 						Contents:    []linebot.FlexComponent{
 							&linebot.TextComponent{
 								Type:  linebot.FlexComponentTypeText,
 								Text:  "天気の取得できる地域一覧",
-								Size:  linebot.FlexTextSizeTypeXxl,
+								Size:  linebot.FlexTextSizeTypeLg,
 								Align: linebot.FlexComponentAlignTypeCenter,
 								Wrap:  true,
 								Color: "#6AB7FF",
@@ -391,7 +392,7 @@ func SendWeather(bot *linebot.Client, event *linebot.Event,cityName string) {
 							&linebot.TextComponent{
 								Type:     linebot.FlexComponentTypeText,
 								Text:     text,
-								Size:     linebot.FlexTextSizeTypeLg,
+								Size:     linebot.FlexTextSizeTypeSm,
 								Wrap:     true,
 								Weight: linebot.FlexTextWeightTypeBold,
 								MaxLines: linebot.IntPtr(8),
