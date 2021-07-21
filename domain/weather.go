@@ -41,6 +41,6 @@ type Max struct {
 }*/
 
 type City struct {
-	CityName  string
-	ID     string
+	CityName  string `db:"cityName""`
+	ID     string `db:"code""`
 }

@@ -1,7 +1,6 @@
 package model
 
 import (
-	"database/sql"
 	"encoding/json"
 	"fmt"
 	"github.com/line/line-bot-sdk-go/linebot"
@@ -29,9 +28,9 @@ func GetWeather(code string) *domain.Weather{
 	}
 	return data
 }
-func SendWeather(bot *linebot.Client, event *linebot.Event,code string,db *sql.DB) {
+func SendWeather(bot *linebot.Client, event *linebot.Event,code string) {
 	data:=GetWeather(code)
-	result :=0
+	result := 0
 	if  r:=db.QueryRow("SELECT exists(SELECT code from city where code=$1)",code).Scan(&result);r!=nil{
 		log.Fatalf("Couldnot queryRow : %v",r)
 	}
@@ -395,11 +394,10 @@ func ConvertTelop(telop string) string {
 	return "https://pbs.twimg.com/profile_images/1414880257631416321/s0pDGoih_400x400.jpg"
 }
 
-func PrefCode(db *sql.DB,cityName string)domain.City {
-	var data domain.City
+func PrefCode(cityName string)*domain.City {
+	var data *domain.City
 	if err:=db.QueryRow("SELECT * FROM city WHERE city.cityName=$1",cityName).Scan(&data.CityName,&data.ID);err!=nil{
 		log.Fatalf("Couldnot queryRow:%v",err)
 	}
 	return data
-
 }

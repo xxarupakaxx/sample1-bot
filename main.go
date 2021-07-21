@@ -40,7 +40,6 @@ func main() {
 }
 
 func lineHandler(c echo.Context) error {
-	db:=model.DBConnect()
 	bot, err := linebot.New(
 		os.Getenv("CHANNEL_SECRET"),
 		os.Getenv("CHANNEL_TOKEN"),
@@ -110,8 +109,11 @@ func lineHandler(c echo.Context) error {
 			if strings.Contains(message.Text, "weather") {
 				msg:=message.Text
 				cityName:=msg[len("weather "):]
-				data:=model.PrefCode(db,cityName)
-				model.SendWeather(bot,event,data.ID,db)
+				data:=model.PrefCode(cityName)
+				if data == nil {
+					log.Fatalf("data is nil %v",err)
+				}
+				model.SendWeather(bot,event,data.ID)
 			}
 
 		case *linebot.VideoMessage:

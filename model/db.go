@@ -8,7 +8,8 @@ import (
 	"os"
 )
 
-func DBConnect()(db *sql.DB) {
+var db *sql.DB
+func DBConnect() *sql.DB{
 
 	if os.Getenv("CLEARDB_DATABASE_URL") != "" {
 		dbDriver:="mysql"
@@ -17,7 +18,7 @@ func DBConnect()(db *sql.DB) {
 		dbName:=os.Getenv("DB_NAME")
 		Dbhostname:=os.Getenv("DB_HOSTNAME")
 		dboption:="?parseTime=true"
-		db,err:=sql.Open(dbDriver,dbUser+":"+dbPass+"@tcp("+Dbhostname+":3306)/"+dbName+dboption)
+		_db,err:=sql.Open(dbDriver,dbUser+":"+dbPass+"@tcp("+Dbhostname+":3306)/"+dbName+dboption)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -26,6 +27,7 @@ func DBConnect()(db *sql.DB) {
 		}else{
 			log.Println("fail")
 		}
+		db=_db
 	}else {
 		//local
 		godotenv.Load(".env")
@@ -35,7 +37,7 @@ func DBConnect()(db *sql.DB) {
 		dbName:=os.Getenv("DB_NAME")
 		dbOption:="?parseTime=true&loc=Asia%2FTokyo"
 		dataSource:=dbUser+":"+dbPass+"@tcp(us-cdbr-east-04.cleardb.com:3306)/"+dbName+dbOption
-		db,err:=sql.Open(dbDriver,dataSource)
+		_db,err:=sql.Open(dbDriver,dataSource)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -44,6 +46,7 @@ func DBConnect()(db *sql.DB) {
 		}else{
 			log.Println("fail")
 		}
+		db=_db
 	}
 	return db
 }
