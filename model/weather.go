@@ -369,6 +369,112 @@ func SendWeather(bot *linebot.Client, event *linebot.Event,cityName string) {
 					},
 				},
 				{
+					Type:      linebot.FlexContainerTypeBubble,
+					Direction: linebot.FlexBubbleDirectionTypeLTR,
+					Header:    &linebot.BoxComponent{
+						Type:            linebot.FlexComponentTypeBox,
+						Layout:          linebot.FlexBoxLayoutTypeBaseline,
+						Contents:        []linebot.FlexComponent{
+							&linebot.TextComponent{
+								Type:       linebot.FlexComponentTypeText,
+								Text:       "明後日の天気",
+								Size:       linebot.FlexTextSizeTypeLg,
+								Align:      linebot.FlexComponentAlignTypeCenter,
+								Weight:     linebot.FlexTextWeightTypeBold,
+								//Color:      "",
+								//Action:     nil,
+							},
+						},
+						CornerRadius:    linebot.FlexComponentCornerRadiusTypeXxl,
+						BorderColor:     "#00bfff",
+						//Action: nil,
+					},
+					Hero:      &linebot.ImageComponent{
+						Type:            linebot.FlexComponentTypeImage,
+						URL:             ConvertTelop(data.Forecasts[2].Telop),
+						Size:            linebot.FlexImageSizeTypeXxl,
+						AspectRatio:     linebot.FlexImageAspectRatioType1to1,
+						AspectMode:      linebot.FlexImageAspectModeTypeFit,
+						//Action:          nil,
+					},
+					Body:      &linebot.BoxComponent{
+						Type:            linebot.FlexComponentTypeBox,
+						Layout:          linebot.FlexBoxLayoutTypeVertical,
+						Contents:        []linebot.FlexComponent{
+							&linebot.TextComponent{
+								Type: linebot.FlexComponentTypeText,
+								Text: "最高気温 : " + data.Forecasts[2].Temperature.Max.Celsius + "℃\n",
+								Flex:       linebot.IntPtr(1),
+								Size:       linebot.FlexTextSizeTypeXl,
+								Wrap:       true,
+								//Action:     nil,
+								MaxLines:   linebot.IntPtr(2),
+							},
+							&linebot.TextComponent{
+								Type: linebot.FlexComponentTypeText,
+								Text: "最低気温 : " + data.Forecasts[2].Temperature.Min.Celsius + "℃\n",
+								Flex:       linebot.IntPtr(1),
+								Size:       linebot.FlexTextSizeTypeXl,
+								Wrap:       true,
+								//Action:     nil,
+								MaxLines:   linebot.IntPtr(2),
+							},
+							&linebot.TextComponent{
+								Type:       linebot.FlexComponentTypeText,
+								Text:       description,
+								//Contents:   nil,
+								Flex:       linebot.IntPtr(6),
+								Size:       linebot.FlexTextSizeTypeSm,
+								Wrap:       true,
+								//Color:      "",
+								//Action:     nil,
+								MaxLines:   linebot.IntPtr(10),
+							},
+						},
+						BorderColor:     "#5cd8f7",
+						//Action:          nil,
+					},
+					Footer: &linebot.BoxComponent{
+						Type:            linebot.FlexComponentTypeBox,
+						Layout:          linebot.FlexBoxLayoutTypeBaseline,
+						Contents:        []linebot.FlexComponent{
+							&linebot.TextComponent{
+								Type:   linebot.FlexComponentTypeText,
+								Text:   "天気予報",
+								Align:  linebot.FlexComponentAlignTypeCenter,
+								Wrap:   true,
+								Color:  "#2196F3",
+								Action: linebot.NewURIAction("天気予報",data.Link),
+								Style:  linebot.FlexTextStyleTypeItalic,
+								Weight: linebot.FlexTextWeightTypeBold,
+
+							},
+						},
+						Action: linebot.NewURIAction("天気予報",data.Link),
+						BorderColor:     "#90CAF9",
+					},
+
+					Styles:    &linebot.BubbleStyle{
+						Header: &linebot.BlockStyle{
+							Separator:       true,
+							SeparatorColor:  "#2196F3",
+						},
+						Hero:   &linebot.BlockStyle{
+							Separator:      true,
+							SeparatorColor: "#2196F3" ,
+
+						},
+						Body:   &linebot.BlockStyle{
+							Separator:      true,
+							SeparatorColor: "#37474F",
+						},
+						Footer: &linebot.BlockStyle{
+							Separator:      true,
+							SeparatorColor: "#2196F3",
+						},
+					},
+				},
+				/*{
 					Type:   linebot.FlexContainerTypeBubble,
 					Direction: linebot.FlexBubbleDirectionTypeLTR,
 					Header: &linebot.BoxComponent{
@@ -399,7 +505,7 @@ func SendWeather(bot *linebot.Client, event *linebot.Event,cityName string) {
 							},
 						},
 					},
-				},
+				},*/
 			},
 		},
 	)
