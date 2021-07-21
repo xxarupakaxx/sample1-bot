@@ -109,11 +109,7 @@ func lineHandler(c echo.Context) error {
 			if strings.Contains(message.Text, "weather") {
 				msg:=message.Text
 				cityName:=msg[len("weather "):]
-				data:=model.PrefCode(cityName)
-				if data == nil {
-					log.Fatalf("data is nil %v",err)
-				}
-				model.SendWeather(bot,event,data.ID)
+				model.SendWeather(bot,event,cityName)
 			}
 
 		case *linebot.VideoMessage:

@@ -28,9 +28,9 @@ func GetWeather(code string) *domain.Weather{
 	}
 	return data
 }
-func SendWeather(bot *linebot.Client, event *linebot.Event,code string) {
-	data:=GetWeather(code)
-	result := 0
+func SendWeather(bot *linebot.Client, event *linebot.Event,cityName string) {
+	data:=GetWeather(PrefCode(cityName))
+	/*result := 0
 	if  r:=db.QueryRow("SELECT exists(SELECT code from City where code=$1)",code).Scan(&result);r!=nil{
 		log.Fatalf("Couldnot queryRow : %v",r)
 	}
@@ -39,7 +39,7 @@ func SendWeather(bot *linebot.Client, event *linebot.Event,code string) {
 			log.Fatalf("Could Not sending :%v",err)
 		}
 		return
-	}
+	}*/
 	description:=strings.NewReplacer("\n","").Replace(data.Description.Text)
 	resp:=linebot.NewFlexMessage(
 		"Weather Information",
@@ -394,10 +394,11 @@ func ConvertTelop(telop string) string {
 	return "https://pbs.twimg.com/profile_images/1414880257631416321/s0pDGoih_400x400.jpg"
 }
 
-func PrefCode(cityName string)*domain.City {
-	var data *domain.City
+func PrefCode(cityName string) string {
+	/*var data *domain.City
 	if err:=db.QueryRow("SELECT * FROM City WHERE City.cityName=$1",cityName).Scan(&data.CityName,&data.ID);err!=nil{
 		log.Fatalf("Couldnot queryRow:%v",err)
 	}
-	return data
+	return data*/
+	return domain.CodeCity[cityName]
 }
