@@ -4,6 +4,3 @@ build:
     worker:
       dockerfile: Dockerfile
       target: builder
-
-  release:
-    image: worker
