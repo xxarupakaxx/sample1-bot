@@ -17,7 +17,7 @@ func DBConnect() *sql.DB{
 		dbPass:=os.Getenv("DB_PASSWORD")
 		dbName:=os.Getenv("DB_NAME")
 		Dbhostname:=os.Getenv("DB_HOSTNAME")
-		dboption:="?reconnect=true"
+		dboption:="?parseTime=true"
 		_db,err:=sql.Open(dbDriver,dbUser+":"+dbPass+"@tcp("+Dbhostname+":3306)/"+dbName+dboption)
 		if err != nil {
 			log.Fatal(err)
