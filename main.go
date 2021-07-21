@@ -95,6 +95,7 @@ func lineHandler(c echo.Context) error {
 		case *linebot.LocationMessage:
 			model.SendRestoInfo(bot,event)
 		case *linebot.TextMessage:
+			messageSplit:=strings.Split(message.Text," ")
 			user,_:=bot.GetProfile(event.Source.UserID).Do()
 			if message.Text == "help" {
 				text:=user.DisplayName+"さん\n"+HELPMESSAGE
@@ -106,16 +107,13 @@ func lineHandler(c echo.Context) error {
 			if message.Text == "quick" {
 				quickRep(bot,event)
 			}
-			if strings.Contains(message.Text,"weather") && strings.Contains(message.Text,"一覧") {
-				text:="地域一覧"
-				for s, _ := range domain.CodeCity {
-					text+=s+" \n"
+			if ContainsElement(messageSplit, "weather") {
+				for city, _ := range domain.CodeCity {
+					if ContainsElement(messageSplit, city) {
+						model.SendWeather(bot,event,city)
+						return err
+					}
 				}
-				bot.ReplyMessage(event.ReplyToken,linebot.NewTextMessage(text)).Do()
-			} else if strings.Contains(message.Text, "weather") {
-				msg:=message.Text
-				cityName:=msg[len("weather "):]
-				model.SendWeather(bot,event,cityName)
 			}
 
 		case *linebot.VideoMessage:
@@ -162,6 +160,12 @@ func quickRep(bot *linebot.Client, event *linebot.Event) {
 	if _, err := bot.ReplyMessage(event.ReplyToken,re).Do(); err != nil {
 		log.Fatalf("QuickError:%v",err)
 	}
-
-
+}
+func ContainsElement(s []string,code string) bool {
+	for _, s2 := range s {
+		if s2 == code {
+			return true
+		}
+	}
+	return false
 }
