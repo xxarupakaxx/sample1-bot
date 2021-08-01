@@ -48,105 +48,103 @@ func SendWeather(bot *linebot.Client, event *linebot.Event,cityName string) {
 	resp:=linebot.NewFlexMessage(
 		"Weather Information",
 		&linebot.CarouselContainer{
-			Type:     linebot.FlexContainerTypeCarousel,
+			Type: linebot.FlexContainerTypeCarousel,
 			Contents: []*linebot.BubbleContainer{
 				{
 					Type:      linebot.FlexContainerTypeBubble,
 					Direction: linebot.FlexBubbleDirectionTypeLTR,
-					Header:    &linebot.BoxComponent{
-						Type:            linebot.FlexComponentTypeBox,
-						Layout:          linebot.FlexBoxLayoutTypeBaseline,
-						Contents:        []linebot.FlexComponent{
+					Header: &linebot.BoxComponent{
+						Type:   linebot.FlexComponentTypeBox,
+						Layout: linebot.FlexBoxLayoutTypeBaseline,
+						Contents: []linebot.FlexComponent{
 							&linebot.TextComponent{
-								Type:       linebot.FlexComponentTypeText,
-								Text:       "今日の天気",
-								Size:       linebot.FlexTextSizeTypeLg,
-								Align:      linebot.FlexComponentAlignTypeCenter,
-								Weight:     linebot.FlexTextWeightTypeBold,
+								Type:   linebot.FlexComponentTypeText,
+								Text:   "今日の天気",
+								Size:   linebot.FlexTextSizeTypeLg,
+								Align:  linebot.FlexComponentAlignTypeCenter,
+								Weight: linebot.FlexTextWeightTypeBold,
 								//Color:      "",
 								//Action:     nil,
 							},
 						},
-						CornerRadius:    linebot.FlexComponentCornerRadiusTypeXxl,
-						BorderColor:     "#00bfff",
+						CornerRadius: linebot.FlexComponentCornerRadiusTypeXxl,
+						BorderColor:  "#00bfff",
 						//Action: nil,
 					},
-					Hero:      &linebot.ImageComponent{
-						Type:            linebot.FlexComponentTypeImage,
-						URL:             ConvertTelop(data.Forecasts[0].Telop),
-						Size:            linebot.FlexImageSizeTypeXxl,
-						AspectRatio:     linebot.FlexImageAspectRatioType1to1,
-						AspectMode:      linebot.FlexImageAspectModeTypeFit,
+					Hero: &linebot.ImageComponent{
+						Type:        linebot.FlexComponentTypeImage,
+						URL:         ConvertTelop(data.Forecasts[0].Telop),
+						Size:        linebot.FlexImageSizeTypeXxl,
+						AspectRatio: linebot.FlexImageAspectRatioType1to1,
+						AspectMode:  linebot.FlexImageAspectModeTypeFit,
 						//Action:          nil,
 					},
-					Body:      &linebot.BoxComponent{
-						Type:            linebot.FlexComponentTypeBox,
-						Layout:          linebot.FlexBoxLayoutTypeVertical,
-						Contents:        []linebot.FlexComponent{
+					Body: &linebot.BoxComponent{
+						Type:   linebot.FlexComponentTypeBox,
+						Layout: linebot.FlexBoxLayoutTypeVertical,
+						Contents: []linebot.FlexComponent{
 							&linebot.TextComponent{
 								Type: linebot.FlexComponentTypeText,
 								Text: "最高気温 : " + data.Forecasts[0].Temperature.Max.Celsius + "℃\n",
-								Flex:       linebot.IntPtr(1),
-								Size:       linebot.FlexTextSizeTypeXl,
-								Wrap:       true,
+								Flex: linebot.IntPtr(1),
+								Size: linebot.FlexTextSizeTypeXl,
+								Wrap: true,
 								//Action:     nil,
-								MaxLines:   linebot.IntPtr(2),
+								MaxLines: linebot.IntPtr(2),
 							},
 							&linebot.TextComponent{
 								Type: linebot.FlexComponentTypeText,
 								Text: "最低気温 : " + data.Forecasts[0].Temperature.Min.Celsius + "℃\n",
-								Flex:       linebot.IntPtr(1),
-								Size:       linebot.FlexTextSizeTypeXl,
-								Wrap:       true,
+								Flex: linebot.IntPtr(1),
+								Size: linebot.FlexTextSizeTypeXl,
+								Wrap: true,
 								//Action:     nil,
-								MaxLines:   linebot.IntPtr(2),
+								MaxLines: linebot.IntPtr(2),
 							},
 							&linebot.TextComponent{
-								Type:       linebot.FlexComponentTypeText,
-								Text:       description,
+								Type: linebot.FlexComponentTypeText,
+								Text: description,
 								//Contents:   nil,
-								Flex:       linebot.IntPtr(6),
-								Size:       linebot.FlexTextSizeTypeSm,
-								Wrap:       true,
+								Flex: linebot.IntPtr(6),
+								Size: linebot.FlexTextSizeTypeSm,
+								Wrap: true,
 								//Color:      "",
 								//Action:     nil,
-								MaxLines:   linebot.IntPtr(10),
+								MaxLines: linebot.IntPtr(10),
 							},
 						},
-						BorderColor:     "#5cd8f7",
+						BorderColor: "#5cd8f7",
 						//Action:          nil,
 					},
 					Footer: &linebot.BoxComponent{
-						Type:            linebot.FlexComponentTypeBox,
-						Layout:          linebot.FlexBoxLayoutTypeBaseline,
-						Contents:        []linebot.FlexComponent{
+						Type:   linebot.FlexComponentTypeBox,
+						Layout: linebot.FlexBoxLayoutTypeBaseline,
+						Contents: []linebot.FlexComponent{
 							&linebot.TextComponent{
 								Type:   linebot.FlexComponentTypeText,
 								Text:   "天気予報",
 								Align:  linebot.FlexComponentAlignTypeCenter,
 								Wrap:   true,
 								Color:  "#2196F3",
-								Action: linebot.NewURIAction("天気予報",data.Link),
+								Action: linebot.NewURIAction("天気予報", data.Link),
 								Style:  linebot.FlexTextStyleTypeItalic,
 								Weight: linebot.FlexTextWeightTypeBold,
-
 							},
 						},
-						Action: linebot.NewURIAction("天気予報",data.Link),
-						BorderColor:     "#90CAF9",
+						Action:      linebot.NewURIAction("天気予報", data.Link),
+						BorderColor: "#90CAF9",
 					},
 
-					Styles:    &linebot.BubbleStyle{
+					Styles: &linebot.BubbleStyle{
 						Header: &linebot.BlockStyle{
-							Separator:       true,
-							SeparatorColor:  "#2196F3",
-						},
-						Hero:   &linebot.BlockStyle{
 							Separator:      true,
-							SeparatorColor: "#2196F3" ,
-
+							SeparatorColor: "#2196F3",
 						},
-						Body:   &linebot.BlockStyle{
+						Hero: &linebot.BlockStyle{
+							Separator:      true,
+							SeparatorColor: "#2196F3",
+						},
+						Body: &linebot.BlockStyle{
 							Separator:      true,
 							SeparatorColor: "#37474F",
 						},
@@ -159,100 +157,98 @@ func SendWeather(bot *linebot.Client, event *linebot.Event,cityName string) {
 				{
 					Type:      linebot.FlexContainerTypeBubble,
 					Direction: linebot.FlexBubbleDirectionTypeLTR,
-					Header:    &linebot.BoxComponent{
-						Type:            linebot.FlexComponentTypeBox,
-						Layout:          linebot.FlexBoxLayoutTypeBaseline,
-						Contents:        []linebot.FlexComponent{
+					Header: &linebot.BoxComponent{
+						Type:   linebot.FlexComponentTypeBox,
+						Layout: linebot.FlexBoxLayoutTypeBaseline,
+						Contents: []linebot.FlexComponent{
 							&linebot.TextComponent{
-								Type:       linebot.FlexComponentTypeText,
-								Text:       "明日の天気",
-								Size:       linebot.FlexTextSizeTypeLg,
-								Align:      linebot.FlexComponentAlignTypeCenter,
-								Weight:     linebot.FlexTextWeightTypeBold,
+								Type:   linebot.FlexComponentTypeText,
+								Text:   "明日の天気",
+								Size:   linebot.FlexTextSizeTypeLg,
+								Align:  linebot.FlexComponentAlignTypeCenter,
+								Weight: linebot.FlexTextWeightTypeBold,
 								//Color:      "",
 								//Action:     nil,
 							},
 						},
-						CornerRadius:    linebot.FlexComponentCornerRadiusTypeXxl,
-						BorderColor:     "#00bfff",
+						CornerRadius: linebot.FlexComponentCornerRadiusTypeXxl,
+						BorderColor:  "#00bfff",
 						//Action: nil,
 					},
-					Hero:      &linebot.ImageComponent{
-						Type:            linebot.FlexComponentTypeImage,
-						URL:             ConvertTelop(data.Forecasts[1].Telop),
-						Size:            linebot.FlexImageSizeTypeXxl,
-						AspectRatio:     linebot.FlexImageAspectRatioType1to1,
-						AspectMode:      linebot.FlexImageAspectModeTypeFit,
+					Hero: &linebot.ImageComponent{
+						Type:        linebot.FlexComponentTypeImage,
+						URL:         ConvertTelop(data.Forecasts[1].Telop),
+						Size:        linebot.FlexImageSizeTypeXxl,
+						AspectRatio: linebot.FlexImageAspectRatioType1to1,
+						AspectMode:  linebot.FlexImageAspectModeTypeFit,
 						//Action:          nil,
 					},
-					Body:      &linebot.BoxComponent{
-						Type:            linebot.FlexComponentTypeBox,
-						Layout:          linebot.FlexBoxLayoutTypeVertical,
-						Contents:        []linebot.FlexComponent{
+					Body: &linebot.BoxComponent{
+						Type:   linebot.FlexComponentTypeBox,
+						Layout: linebot.FlexBoxLayoutTypeVertical,
+						Contents: []linebot.FlexComponent{
 							&linebot.TextComponent{
 								Type: linebot.FlexComponentTypeText,
 								Text: "最高気温 : " + data.Forecasts[1].Temperature.Max.Celsius + "℃\n",
-								Flex:       linebot.IntPtr(1),
-								Size:       linebot.FlexTextSizeTypeXl,
-								Wrap:       true,
+								Flex: linebot.IntPtr(1),
+								Size: linebot.FlexTextSizeTypeXl,
+								Wrap: true,
 								//Action:     nil,
-								MaxLines:   linebot.IntPtr(2),
+								MaxLines: linebot.IntPtr(2),
 							},
 							&linebot.TextComponent{
 								Type: linebot.FlexComponentTypeText,
 								Text: "最低気温 : " + data.Forecasts[1].Temperature.Min.Celsius + "℃\n",
-								Flex:       linebot.IntPtr(1),
-								Size:       linebot.FlexTextSizeTypeXl,
-								Wrap:       true,
+								Flex: linebot.IntPtr(1),
+								Size: linebot.FlexTextSizeTypeXl,
+								Wrap: true,
 								//Action:     nil,
-								MaxLines:   linebot.IntPtr(2),
+								MaxLines: linebot.IntPtr(2),
 							},
 							&linebot.TextComponent{
-								Type:       linebot.FlexComponentTypeText,
-								Text:       description,
+								Type: linebot.FlexComponentTypeText,
+								Text: description,
 								//Contents:   nil,
-								Flex:       linebot.IntPtr(6),
-								Size:       linebot.FlexTextSizeTypeSm,
-								Wrap:       true,
+								Flex: linebot.IntPtr(6),
+								Size: linebot.FlexTextSizeTypeSm,
+								Wrap: true,
 								//Color:      "",
 								//Action:     nil,
-								MaxLines:   linebot.IntPtr(10),
+								MaxLines: linebot.IntPtr(10),
 							},
 						},
-						BorderColor:     "#5cd8f7",
+						BorderColor: "#5cd8f7",
 						//Action:          nil,
 					},
 					Footer: &linebot.BoxComponent{
-						Type:            linebot.FlexComponentTypeBox,
-						Layout:          linebot.FlexBoxLayoutTypeBaseline,
-						Contents:        []linebot.FlexComponent{
+						Type:   linebot.FlexComponentTypeBox,
+						Layout: linebot.FlexBoxLayoutTypeBaseline,
+						Contents: []linebot.FlexComponent{
 							&linebot.TextComponent{
 								Type:   linebot.FlexComponentTypeText,
 								Text:   "天気予報",
 								Align:  linebot.FlexComponentAlignTypeCenter,
 								Wrap:   true,
 								Color:  "#2196F3",
-								Action: linebot.NewURIAction("天気予報",data.Link),
+								Action: linebot.NewURIAction("天気予報", data.Link),
 								Style:  linebot.FlexTextStyleTypeItalic,
 								Weight: linebot.FlexTextWeightTypeBold,
-
 							},
 						},
-						Action: linebot.NewURIAction("天気予報",data.Link),
-						BorderColor:     "#90CAF9",
+						Action:      linebot.NewURIAction("天気予報", data.Link),
+						BorderColor: "#90CAF9",
 					},
 
-					Styles:    &linebot.BubbleStyle{
+					Styles: &linebot.BubbleStyle{
 						Header: &linebot.BlockStyle{
-							Separator:       true,
-							SeparatorColor:  "#2196F3",
-						},
-						Hero:   &linebot.BlockStyle{
 							Separator:      true,
-							SeparatorColor: "#2196F3" ,
-
+							SeparatorColor: "#2196F3",
 						},
-						Body:   &linebot.BlockStyle{
+						Hero: &linebot.BlockStyle{
+							Separator:      true,
+							SeparatorColor: "#2196F3",
+						},
+						Body: &linebot.BlockStyle{
 							Separator:      true,
 							SeparatorColor: "#37474F",
 						},
@@ -265,100 +261,98 @@ func SendWeather(bot *linebot.Client, event *linebot.Event,cityName string) {
 				{
 					Type:      linebot.FlexContainerTypeBubble,
 					Direction: linebot.FlexBubbleDirectionTypeLTR,
-					Header:    &linebot.BoxComponent{
-						Type:            linebot.FlexComponentTypeBox,
-						Layout:          linebot.FlexBoxLayoutTypeBaseline,
-						Contents:        []linebot.FlexComponent{
+					Header: &linebot.BoxComponent{
+						Type:   linebot.FlexComponentTypeBox,
+						Layout: linebot.FlexBoxLayoutTypeBaseline,
+						Contents: []linebot.FlexComponent{
 							&linebot.TextComponent{
-								Type:       linebot.FlexComponentTypeText,
-								Text:       "明後日の天気",
-								Size:       linebot.FlexTextSizeTypeLg,
-								Align:      linebot.FlexComponentAlignTypeCenter,
-								Weight:     linebot.FlexTextWeightTypeBold,
+								Type:   linebot.FlexComponentTypeText,
+								Text:   "明後日の天気",
+								Size:   linebot.FlexTextSizeTypeLg,
+								Align:  linebot.FlexComponentAlignTypeCenter,
+								Weight: linebot.FlexTextWeightTypeBold,
 								//Color:      "",
 								//Action:     nil,
 							},
 						},
-						CornerRadius:    linebot.FlexComponentCornerRadiusTypeXxl,
-						BorderColor:     "#00bfff",
+						CornerRadius: linebot.FlexComponentCornerRadiusTypeXxl,
+						BorderColor:  "#00bfff",
 						//Action: nil,
 					},
-					Hero:      &linebot.ImageComponent{
-						Type:            linebot.FlexComponentTypeImage,
-						URL:             ConvertTelop(data.Forecasts[2].Telop),
-						Size:            linebot.FlexImageSizeTypeXxl,
-						AspectRatio:     linebot.FlexImageAspectRatioType1to1,
-						AspectMode:      linebot.FlexImageAspectModeTypeFit,
+					Hero: &linebot.ImageComponent{
+						Type:        linebot.FlexComponentTypeImage,
+						URL:         ConvertTelop(data.Forecasts[2].Telop),
+						Size:        linebot.FlexImageSizeTypeXxl,
+						AspectRatio: linebot.FlexImageAspectRatioType1to1,
+						AspectMode:  linebot.FlexImageAspectModeTypeFit,
 						//Action:          nil,
 					},
-					Body:      &linebot.BoxComponent{
-						Type:            linebot.FlexComponentTypeBox,
-						Layout:          linebot.FlexBoxLayoutTypeVertical,
-						Contents:        []linebot.FlexComponent{
+					Body: &linebot.BoxComponent{
+						Type:   linebot.FlexComponentTypeBox,
+						Layout: linebot.FlexBoxLayoutTypeVertical,
+						Contents: []linebot.FlexComponent{
 							&linebot.TextComponent{
 								Type: linebot.FlexComponentTypeText,
 								Text: "最高気温 : " + data.Forecasts[2].Temperature.Max.Celsius + "℃\n",
-								Flex:       linebot.IntPtr(1),
-								Size:       linebot.FlexTextSizeTypeXl,
-								Wrap:       true,
+								Flex: linebot.IntPtr(1),
+								Size: linebot.FlexTextSizeTypeXl,
+								Wrap: true,
 								//Action:     nil,
-								MaxLines:   linebot.IntPtr(2),
+								MaxLines: linebot.IntPtr(2),
 							},
 							&linebot.TextComponent{
 								Type: linebot.FlexComponentTypeText,
 								Text: "最低気温 : " + data.Forecasts[2].Temperature.Min.Celsius + "℃\n",
-								Flex:       linebot.IntPtr(1),
-								Size:       linebot.FlexTextSizeTypeXl,
-								Wrap:       true,
+								Flex: linebot.IntPtr(1),
+								Size: linebot.FlexTextSizeTypeXl,
+								Wrap: true,
 								//Action:     nil,
-								MaxLines:   linebot.IntPtr(2),
+								MaxLines: linebot.IntPtr(2),
 							},
 							&linebot.TextComponent{
-								Type:       linebot.FlexComponentTypeText,
-								Text:       description,
+								Type: linebot.FlexComponentTypeText,
+								Text: description,
 								//Contents:   nil,
-								Flex:       linebot.IntPtr(6),
-								Size:       linebot.FlexTextSizeTypeSm,
-								Wrap:       true,
+								Flex: linebot.IntPtr(6),
+								Size: linebot.FlexTextSizeTypeSm,
+								Wrap: true,
 								//Color:      "",
 								//Action:     nil,
-								MaxLines:   linebot.IntPtr(10),
+								MaxLines: linebot.IntPtr(10),
 							},
 						},
-						BorderColor:     "#5cd8f7",
+						BorderColor: "#5cd8f7",
 						//Action:          nil,
 					},
 					Footer: &linebot.BoxComponent{
-						Type:            linebot.FlexComponentTypeBox,
-						Layout:          linebot.FlexBoxLayoutTypeBaseline,
-						Contents:        []linebot.FlexComponent{
+						Type:   linebot.FlexComponentTypeBox,
+						Layout: linebot.FlexBoxLayoutTypeBaseline,
+						Contents: []linebot.FlexComponent{
 							&linebot.TextComponent{
 								Type:   linebot.FlexComponentTypeText,
 								Text:   "天気予報",
 								Align:  linebot.FlexComponentAlignTypeCenter,
 								Wrap:   true,
 								Color:  "#2196F3",
-								Action: linebot.NewURIAction("天気予報",data.Link),
+								Action: linebot.NewURIAction("天気予報", data.Link),
 								Style:  linebot.FlexTextStyleTypeItalic,
 								Weight: linebot.FlexTextWeightTypeBold,
-
 							},
 						},
-						Action: linebot.NewURIAction("天気予報",data.Link),
-						BorderColor:     "#90CAF9",
+						Action:      linebot.NewURIAction("天気予報", data.Link),
+						BorderColor: "#90CAF9",
 					},
 
-					Styles:    &linebot.BubbleStyle{
+					Styles: &linebot.BubbleStyle{
 						Header: &linebot.BlockStyle{
-							Separator:       true,
-							SeparatorColor:  "#2196F3",
-						},
-						Hero:   &linebot.BlockStyle{
 							Separator:      true,
-							SeparatorColor: "#2196F3" ,
-
+							SeparatorColor: "#2196F3",
 						},
-						Body:   &linebot.BlockStyle{
+						Hero: &linebot.BlockStyle{
+							Separator:      true,
+							SeparatorColor: "#2196F3",
+						},
+						Body: &linebot.BlockStyle{
 							Separator:      true,
 							SeparatorColor: "#37474F",
 						},
@@ -371,22 +365,22 @@ func SendWeather(bot *linebot.Client, event *linebot.Event,cityName string) {
 				{
 					Type:      linebot.FlexContainerTypeBubble,
 					Direction: linebot.FlexBubbleDirectionTypeLTR,
-					Header:    &linebot.BoxComponent{
-						Type:            linebot.FlexComponentTypeBox,
-						Layout:          linebot.FlexBoxLayoutTypeBaseline,
-						Contents:        []linebot.FlexComponent{
+					Header: &linebot.BoxComponent{
+						Type:   linebot.FlexComponentTypeBox,
+						Layout: linebot.FlexBoxLayoutTypeBaseline,
+						Contents: []linebot.FlexComponent{
 							&linebot.TextComponent{
-								Type:       linebot.FlexComponentTypeText,
-								Text:       "取得できる地域一覧",
-								Size:       linebot.FlexTextSizeTypeLg,
-								Align:      linebot.FlexComponentAlignTypeCenter,
-								Weight:     linebot.FlexTextWeightTypeBold,
+								Type:   linebot.FlexComponentTypeText,
+								Text:   "取得できる地域一覧",
+								Size:   linebot.FlexTextSizeTypeLg,
+								Align:  linebot.FlexComponentAlignTypeCenter,
+								Weight: linebot.FlexTextWeightTypeBold,
 								//Color:      "",
 								//Action:     nil,
 							},
 						},
-						CornerRadius:    linebot.FlexComponentCornerRadiusTypeXxl,
-						BorderColor:     "#00bfff",
+						CornerRadius: linebot.FlexComponentCornerRadiusTypeXxl,
+						BorderColor:  "#00bfff",
 						//Action: nil,
 					},
 					/*Hero:      &linebot.ImageComponent{
@@ -397,53 +391,51 @@ func SendWeather(bot *linebot.Client, event *linebot.Event,cityName string) {
 						AspectMode:      linebot.FlexImageAspectModeTypeFit,
 						//Action:          nil,
 					},*/
-					Body:      &linebot.BoxComponent{
-						Type:            linebot.FlexComponentTypeBox,
-						Layout:          linebot.FlexBoxLayoutTypeVertical,
-						Contents:        []linebot.FlexComponent{
+					Body: &linebot.BoxComponent{
+						Type:   linebot.FlexComponentTypeBox,
+						Layout: linebot.FlexBoxLayoutTypeVertical,
+						Contents: []linebot.FlexComponent{
 							&linebot.TextComponent{
 								Type: linebot.FlexComponentTypeText,
 								Text: text,
-								Size:       linebot.FlexTextSizeTypeSm,
-								Wrap:       true,
+								Size: linebot.FlexTextSizeTypeSm,
+								Wrap: true,
 								//Action:     nil,
-								MaxLines:   linebot.IntPtr(30),
+								MaxLines: linebot.IntPtr(30),
 							},
 						},
-						BorderColor:     "#5cd8f7",
+						BorderColor: "#5cd8f7",
 						//Action:          nil,
 					},
 					Footer: &linebot.BoxComponent{
-						Type:            linebot.FlexComponentTypeBox,
-						Layout:          linebot.FlexBoxLayoutTypeBaseline,
-						Contents:        []linebot.FlexComponent{
+						Type:   linebot.FlexComponentTypeBox,
+						Layout: linebot.FlexBoxLayoutTypeBaseline,
+						Contents: []linebot.FlexComponent{
 							&linebot.TextComponent{
 								Type:   linebot.FlexComponentTypeText,
 								Text:   "天気一覧表",
 								Align:  linebot.FlexComponentAlignTypeCenter,
 								Wrap:   true,
 								Color:  "#2196F3",
-								Action: linebot.NewURIAction("天気一覧表","https://www.jma.go.jp/bosai/map.html#5/33.164/137.413/&contents=forecast"),
+								Action: linebot.NewURIAction("天気一覧表", "https://www.jma.go.jp/bosai/map.html#5/33.164/137.413/&contents=forecast"),
 								Style:  linebot.FlexTextStyleTypeItalic,
 								Weight: linebot.FlexTextWeightTypeBold,
-
 							},
 						},
-						Action: linebot.NewURIAction("天気一覧表","https://www.jma.go.jp/bosai/map.html#5/33.164/137.413/&contents=forecast"),
-						BorderColor:     "#90CAF9",
+						Action:      linebot.NewURIAction("天気一覧表", "https://www.jma.go.jp/bosai/map.html#5/33.164/137.413/&contents=forecast"),
+						BorderColor: "#90CAF9",
 					},
 
-					Styles:    &linebot.BubbleStyle{
+					Styles: &linebot.BubbleStyle{
 						Header: &linebot.BlockStyle{
-							Separator:       true,
-							SeparatorColor:  "#2196F3",
-						},
-						Hero:   &linebot.BlockStyle{
 							Separator:      true,
-							SeparatorColor: "#2196F3" ,
-
+							SeparatorColor: "#2196F3",
 						},
-						Body:   &linebot.BlockStyle{
+						Hero: &linebot.BlockStyle{
+							Separator:      true,
+							SeparatorColor: "#2196F3",
+						},
+						Body: &linebot.BlockStyle{
 							Separator:      true,
 							SeparatorColor: "#37474F",
 						},
